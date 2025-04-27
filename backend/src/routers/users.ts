@@ -1,4 +1,8 @@
-import { Router } from "express";
+import { Router} from "express";
+import container from "../config";
 const router = Router();
+const controller = container.resolve("usersController");
 
-//router.post("/auth/login");
+router.post("/users/register",controller.signUpUser.bind(controller));
+
+export default router;

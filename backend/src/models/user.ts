@@ -9,7 +9,7 @@ import {
   PrimaryKey,
   Unique,
 } from "sequelize-typescript";
-
+//import { UserAttributes } from "../types/users.types";
 @Table({
   timestamps: true,
   tableName: "users",
