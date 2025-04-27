@@ -6,8 +6,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+
 app.get("/",async (req:Request,res:Response)  =>{ 
-    res.cookie("token","hello baker");
+    res.cookie("test_cookie","hello baker");
     res.json({ok:true});
 })
 
