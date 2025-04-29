@@ -1,0 +1,25 @@
+
+@host=http://localhost:3000/api
+
+# @name signup
+POST  {{host}}/users/register
+Content-Type: application/json
+
+{
+    "firstName": "",
+    "lastName": "",
+    "username": "",
+    "email": "",
+    "password": ""
+}
+###
+
+# @name login
+POST  {{host}}/users/login
+Content-Type: application/json
+
+{
+    "username": "",
+    "password": ""
+}
+###

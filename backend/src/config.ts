@@ -2,14 +2,21 @@ import * as awilix from "awilix";
 import { config } from "dotenv";
 const { Lifetime } = awilix;
 config();
-
-const PORT = process.env.PORT || 3000;
+const {
+  PORT = 3000,
+  DB_HOST,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  NODE_ENV,
+  JWT_SECRET,
+} = process.env;
 
 const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  name: process.env.DB_NAME,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  name: DB_NAME,
 };
 
 const container = awilix.createContainer({
@@ -21,10 +28,11 @@ export default container;
 container.register({
   dbConfig: awilix.asValue(dbConfig),
   serverPort: awilix.asValue(PORT),
+  jwtSecret: awilix.asValue(JWT_SECRET)
 });
 // Sequelize singleton and debugging varible
 container.register({
-  debugging: awilix.asValue(process.env.NODE_ENV === "development"),
+  debugging: awilix.asValue(NODE_ENV === "development"),
   sequelize: awilix.asFunction(require("./db/connection").default, {
     lifetime: Lifetime.SINGLETON,
   }),

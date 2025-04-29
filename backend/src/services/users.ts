@@ -1,18 +1,50 @@
 import User from "../models/user";
 import HttpError from "../utils/httpError";
 import bcrypt from "bcrypt-ts";
+import jwt from "jsonwebtoken";
 
 export default class usersService {
+  constructor(private jwtSecret: string) {}
 
-  async signUpUser(user: User) {
-    user.password = await bcrypt.hash(user.password,10);
+  async signUp(user: User) {
+    user.password = await bcrypt.hash(user.password, 10);
     await User.create(user).catch((err) => {
       if (err.name === "SequelizeUniqueConstraintError") {
-        throw new HttpError(400, err.message);
+        throw new HttpError(400, err.errors[0].message);
       } else {
         throw new Error(err.message);
       }
     });
   }
 
+  async login(username: string, password: string) {
+    const user = await User.findOne({
+      where: {
+        username: username,
+      },
+    });
+    if (!user) {
+      throw new HttpError(404, "User not found");
+    }
+
+    const isPassValid = await bcrypt.compare(password, user.password);
+    if (!isPassValid) {
+      throw new HttpError(401, "Password incorrect");
+    }
+
+    const token = jwt.sign(
+      {
+        username: user.username,
+        email: user.email,
+        firtsname: user.firstName,
+        user: user.lastName,
+      },
+      this.jwtSecret,
+      {
+        expiresIn:"7d"
+      }
+    );
+
+    return token;
+  }
 }
