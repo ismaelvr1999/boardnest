@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import HttpError from "../utils/httpError";
 import jwt, {Secret} from "jsonwebtoken";
 import container from "../config";
-import { AuthRequest } from "../types/authenticate.types";
+import { AuthRequest, JwtAuthPayload } from "../types/authenticate.types";
 const jwtSecret:Secret = container.resolve("jwtSecret");
 
 const auth:RequestHandler = (req:Request,res:Response,next:NextFunction)=>{
@@ -11,7 +11,7 @@ const auth:RequestHandler = (req:Request,res:Response,next:NextFunction)=>{
         throw new HttpError(401,"Authentication required: user not logged in");
     }
     try{
-        const decoded =  jwt.verify(auth,jwtSecret);
+        const decoded =  jwt.verify(auth,jwtSecret) as JwtAuthPayload;
         (req as AuthRequest).user = decoded;
         next();
     }

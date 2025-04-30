@@ -34,10 +34,11 @@ export default class usersService {
 
     const token = jwt.sign(
       {
+        id: user.id,
         username: user.username,
         email: user.email,
-        firtsname: user.firstName,
-        user: user.lastName,
+        firstName: user.firstName,
+        lastName: user.lastName,
       },
       this.jwtSecret,
       {

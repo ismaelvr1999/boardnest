@@ -8,8 +8,10 @@ import {
   UpdatedAt,
   PrimaryKey,
   Unique,
+  HasMany,
 } from "sequelize-typescript";
-//import { UserAttributes } from "../types/users.types";
+import Board from "./board";
+
 @Table({
   timestamps: true,
   tableName: "users",
@@ -61,5 +63,8 @@ class User extends Model<User> {
 
   @UpdatedAt
   updatedAt!: Date;
+
+  @HasMany(()=>Board)
+  boards!: Board[]
 }
 export default User;

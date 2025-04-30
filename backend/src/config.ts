@@ -26,6 +26,11 @@ const container = awilix.createContainer({
 export default container;
 
 container.register({
+  User: awilix.asFunction(require("./models/user").default),
+  Board: awilix.asFunction(require("./models/board").default)
+})
+
+container.register({
   dbConfig: awilix.asValue(dbConfig),
   serverPort: awilix.asValue(PORT),
   jwtSecret: awilix.asValue(JWT_SECRET)
@@ -40,8 +45,10 @@ container.register({
 
 container.register({
   usersService: awilix.asClass(require("./services/users").default),
+  boardsService: awilix.asClass(require("./services/boards").default)
 });
 
 container.register({
   usersController: awilix.asClass(require("./controllers/user").default),
+  boardsController: awilix.asClass(require("./controllers/boards").default)
 });

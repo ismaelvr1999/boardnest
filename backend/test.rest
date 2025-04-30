@@ -6,10 +6,10 @@ POST  {{host}}/users/register
 Content-Type: application/json
 
 {
-    "firstName": "",
-    "lastName": "",
-    "username": "",
-    "email": "",
+    "firstName": "john",
+    "lastName": "doe",
+    "username": "john",
+    "email": "johndoe@gmail.com",
     "password": ""
 }
 ###
@@ -22,4 +22,17 @@ Content-Type: application/json
     "username": "",
     "password": ""
 }
+###
+
+# @name createBoard
+POST  {{host}}/boards/
+Content-Type: application/json
+
+{
+    "name": "proyect test"
+}
+###
+
+# @name getUserBoards
+GET   {{host}}/boards/
 ###
