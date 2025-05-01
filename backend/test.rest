@@ -32,7 +32,11 @@ Content-Type: application/json
     "name": "proyect test"
 }
 ###
-
+@idBoard = {{createBoard.response.body.board.id}}
 # @name getUserBoards
 GET   {{host}}/boards/
+###
+
+# @name deleteBoard
+DELETE {{host}}/boards/{{idBoard}}
 ###

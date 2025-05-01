@@ -1,10 +1,24 @@
 import { Router } from "express";
 import container from "../config";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import validate from "../middlewares/validate";
 import auth from "../middlewares/authenticate";
 const router = Router();
 const controller = container.resolve("boardsController");
+
+router.get(
+  "/boards/",
+  auth,
+  controller.getUserBoards.bind(controller)
+);
+
+router.delete(
+  "/boards/:id",
+  auth,
+  param("id").trim().notEmpty().isUUID(),
+  validate,
+  controller.deleteBoard.bind(controller)
+);
 
 router.post(
   "/boards/",
@@ -15,10 +29,6 @@ router.post(
   controller.createBoard.bind(controller)
 );
 
-router.get(
-  "/boards/",
-  auth,
-  controller.getUserBoards.bind(controller)
-);
+
 
 export default router;

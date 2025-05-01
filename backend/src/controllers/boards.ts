@@ -14,8 +14,8 @@ export default class BoardsController {
         const newBoard:Board = matchedData(req);
         newBoard.UserId = id;
         
-        await this.service.createBoard(newBoard);        
-        res.status(201).json({ok:true})
+        const board = await this.service.createBoard(newBoard);        
+        res.status(201).json({ok:true,board})
     }
 
     async getUserBoards(req:Request, res:Response){
@@ -23,4 +23,12 @@ export default class BoardsController {
         const boards = await this.service.getUserBoards(id);        
         res.status(200).json({ok:true,boards})
     }
+
+    async deleteBoard(req:Request, res:Response){
+        const {id:userId} =(req as AuthRequest).user;
+        const {id:boardId} = matchedData(req);        
+        await this.service.deleteBoard(boardId,userId);        
+        res.status(200).json({ok:true})
+    }
+    
 }
