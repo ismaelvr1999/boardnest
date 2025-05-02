@@ -12,6 +12,14 @@ router.get(
   controller.getUserBoards.bind(controller)
 );
 
+router.get(
+  "/boards/:id",
+  auth,
+  param("id").trim().notEmpty().isUUID(),
+  validate,
+  controller.getBoard.bind(controller)
+);
+
 router.delete(
   "/boards/:id",
   auth,

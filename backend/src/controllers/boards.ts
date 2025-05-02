@@ -23,6 +23,13 @@ export default class BoardsController {
         const boards = await this.service.getUserBoards(id);        
         res.status(200).json({ok:true,boards})
     }
+    
+    async getBoard(req:Request, res:Response){
+        const {id:userId} =(req as AuthRequest).user;
+        const {id:boardId} = matchedData(req);        
+        const board = await this.service.getBoard(boardId,userId);        
+        res.status(200).json({ok:true,board})
+    }
 
     async deleteBoard(req:Request, res:Response){
         const {id:userId} =(req as AuthRequest).user;

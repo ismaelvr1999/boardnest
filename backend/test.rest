@@ -33,10 +33,34 @@ Content-Type: application/json
 }
 ###
 @idBoard = {{createBoard.response.body.board.id}}
+
 # @name getUserBoards
 GET   {{host}}/boards/
 ###
 
+# @name getBoard
+GET   {{host}}/boards/{{idBoard}}
+###
+
 # @name deleteBoard
 DELETE {{host}}/boards/{{idBoard}}
+###
+
+# @name createBoardColumn
+POST  {{host}}/columns/
+Content-Type: application/json
+
+{
+    "name": "column test",
+    "BoardId": "{{idBoard}}"
+}
+###
+@idColumn = {{createBoardColumn.response.body.column.id}}
+# @name updateColumnIndex
+PUT  {{host}}/columns/{{idColumn}}/index
+Content-Type: application/json
+
+{
+    "newIndex":1
+}
 ###

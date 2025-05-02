@@ -24,12 +24,7 @@ const container = awilix.createContainer({
   strict: true,
 });
 export default container;
-
-container.register({
-  User: awilix.asFunction(require("./models/user").default),
-  Board: awilix.asFunction(require("./models/board").default)
-})
-
+//ENV
 container.register({
   dbConfig: awilix.asValue(dbConfig),
   serverPort: awilix.asValue(PORT),
@@ -42,13 +37,21 @@ container.register({
     lifetime: Lifetime.SINGLETON,
   }),
 });
-
+//Models
+container.register({
+  User: awilix.asFunction(require("./models/user").default),
+  Board: awilix.asFunction(require("./models/board").default),
+  BoardColumn: awilix.asFunction(require("./models/boardColumn").default)
+})
+//Services
 container.register({
   usersService: awilix.asClass(require("./services/users").default),
-  boardsService: awilix.asClass(require("./services/boards").default)
+  boardsService: awilix.asClass(require("./services/boards").default),
+  boardColumnsService: awilix.asClass(require("./services/boardColumns").default),
 });
-
+//Controllers
 container.register({
   usersController: awilix.asClass(require("./controllers/user").default),
-  boardsController: awilix.asClass(require("./controllers/boards").default)
+  boardsController: awilix.asClass(require("./controllers/boards").default),
+  boardColumnsController: awilix.asClass(require("./controllers/boardColumns").default),
 });

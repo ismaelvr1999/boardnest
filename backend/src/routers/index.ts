@@ -6,4 +6,7 @@ router.use(usersRouter);
 
 import boardsRouter from "./boards";
 router.use(boardsRouter);
+
+import boardColumnsRouter from "./boardColumns";
+router.use(boardColumnsRouter);
 export default router;

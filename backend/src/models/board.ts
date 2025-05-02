@@ -9,8 +9,10 @@ import {
   PrimaryKey,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import User from "./user";
+import BoardColumn from "./boardColumn";
 
 @Table({
   timestamps: true,
@@ -52,8 +54,13 @@ class Board extends Model<Board> {
   @UpdatedAt
   updatedAt!: Date;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, {
+    onDelete: "CASCADE"
+  })
   user!: User;
+
+  @HasMany(()=> BoardColumn)
+  boardColumns!: BoardColumn
 }
 
 export default Board;
