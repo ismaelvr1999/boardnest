@@ -39,4 +39,14 @@ export default class BoardsService {
       throw new HttpError(500, "Resource could not be deleted");
     }
   }
+
+  async updateBoard(userId:string,boardId:string,board:{name:string,description:string}) {
+
+    return  Board.update(board,{
+      where:{
+        id: boardId,
+        UserId: userId
+      }
+    });
+  }
 }

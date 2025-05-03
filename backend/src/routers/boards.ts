@@ -37,6 +37,14 @@ router.post(
   controller.createBoard.bind(controller)
 );
 
+router.put(
+  "/boards/:id",
+  auth,
+  body(["name","description"]).trim().notEmpty().isString(),
+  param("id").trim().notEmpty().isUUID(),
+  validate,
+  controller.updateBoard.bind(controller)
+);
 
 
 export default router;

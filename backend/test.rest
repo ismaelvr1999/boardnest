@@ -29,10 +29,21 @@ POST  {{host}}/boards/
 Content-Type: application/json
 
 {
-    "name": "proyect test"
+    "name": "proyect test",
+    "description":"board test"
 }
 ###
 @idBoard = {{createBoard.response.body.board.id}}
+
+# @name updateBoard
+PUT  {{host}}/boards/{{idBoard}}
+Content-Type: application/json
+
+{
+    "name": "board update",
+    "description":"board update"
+}
+###
 
 # @name getUserBoards
 GET   {{host}}/boards/

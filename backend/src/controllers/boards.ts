@@ -37,5 +37,12 @@ export default class BoardsController {
         await this.service.deleteBoard(boardId,userId);        
         res.status(200).json({ok:true})
     }
+
+    async updateBoard(req:Request, res:Response){
+        const {id:userId} =(req as AuthRequest).user;
+        const {id:boardId,name,description}= matchedData(req);        
+        await this.service.updateBoard(userId,boardId,{name,description});        
+        res.status(200).json({ok:true})
+    }
     
 }
