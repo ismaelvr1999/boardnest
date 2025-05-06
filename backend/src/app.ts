@@ -3,12 +3,43 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import routers from "./routers/index";
 import HttpError from "./utils/httpError";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import path from "node:path";
 
 const app = express();
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Boardnest",
+      version: "1.0.0",
+    },
+  },
+  apis: [
+    path.join(__dirname, "/swagger/*.yarn"),
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+};
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 app.use("/api",routers);
 
 app.get("/",async (_:Request,res:Response)  =>{ 
