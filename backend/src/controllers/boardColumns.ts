@@ -16,7 +16,7 @@ export default class BoardColumnsController {
         res.status(201).json({ok:true,column})
     }
     async updateColumnIndex(req:Request, res:Response){
-        const {userId} =(req as AuthRequest).user;
+        const {id:userId} =(req as AuthRequest).user;
         const {id:columnId,newIndex} = matchedData(req); 
         const column = await this.service.updateColumnIndex(columnId,newIndex,userId);        
         res.status(200).json({ok:true,column})

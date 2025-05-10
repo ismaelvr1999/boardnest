@@ -48,4 +48,12 @@ export default class usersService {
 
     return token;
   }
+
+  async getUser(id: string)  {
+    const user = await User.findByPk(id);
+    if(!(user instanceof User)) {
+      throw new HttpError(404,"User not found");
+    }
+    return user;
+  }
 }
