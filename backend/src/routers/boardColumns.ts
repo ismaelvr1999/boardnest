@@ -26,6 +26,14 @@ router.put(
   controller.updateColumnIndex.bind(controller)
 );
 
+router.delete(
+  "/columns/:id",
+  auth,
+  param("id").isUUID(),
+  validate,
+  controller.deleteColumn.bind(controller)
+);
+
 
 
 export default router;

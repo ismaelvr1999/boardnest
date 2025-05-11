@@ -75,3 +75,9 @@ Content-Type: application/json
     "newIndex":1
 }
 ###
+
+# @name deleteColumn
+DELETE {{host}}/columns/{{idColumn}}
+Content-Type: application/json
+
+###

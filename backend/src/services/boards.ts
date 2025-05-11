@@ -5,8 +5,7 @@ import HttpError from "../utils/httpError";
 import usersService from "./users";
 import { Sequelize } from "sequelize";
 export default class BoardsService {
-  
-  constructor (private usersService:usersService){}
+  constructor(private usersService: usersService) {}
   async createBoard(board: Board) {
     return await Board.create(board);
   }
@@ -16,19 +15,18 @@ export default class BoardsService {
   }
 
   async getBoard(boardId: string, userId: string) {
-    
     const board = await Board.findOne({
       where: {
         id: boardId,
         UserId: userId,
       },
       include: {
-        model: BoardColumn
+        model: BoardColumn,
       },
-      order:[[{model:BoardColumn, as:"boardColumns"},"index"]]
+      order: [[{ model: BoardColumn, as: "boardColumns" }, "index"]],
     });
-    if(!(board instanceof Board)){
-        throw new HttpError(404,"Board not found");
+    if (!(board instanceof Board)) {
+      throw new HttpError(404, "Board not found");
     }
     return board;
   }
@@ -45,22 +43,52 @@ export default class BoardsService {
     }
   }
 
-  async updateBoard(userId:string,boardId:string,board:{name:string,description:string}) {
-
-    return  Board.update(board,{
-      where:{
+  async updateBoard(
+    userId: string,
+    boardId: string,
+    board: { name: string; description: string }
+  ) {
+    return Board.update(board, {
+      where: {
         id: boardId,
-        UserId: userId
-      }
+        UserId: userId,
+      },
     });
   }
 
-  async userHasBoard(boardId:string,userId:string) {
+  async userHasBoard(boardId: string, userId: string) {
     const user = await this.usersService.getUser(userId);
     const board = await Board.findByPk(boardId);
-    if(!(board instanceof Board)){
-      throw new HttpError(404,"Board not found")
+    if (!(board instanceof Board)) {
+      throw new HttpError(404, "Board not found");
     }
-    return user.$has("Board",board);
+    return user.$has("Board", board);
+  }
+
+  async getTotalColumns(id: string, userId: string) {
+    const board = await Board.findOne({
+      attributes: ["totalColumns"],
+      where: {
+        id: id,
+        UserId: userId,
+      },
+    });
+
+    if (!(board instanceof Board)) {
+      throw new HttpError(404, "Board not found");
+    }
+
+    return board.totalColumns;
+  }
+
+  async updateTotalColumns(id: string, total: number) {
+    await Board.update(
+      { totalColumns: total },
+      {
+        where: {
+          id,
+        },
+      }
+    );
   }
 }

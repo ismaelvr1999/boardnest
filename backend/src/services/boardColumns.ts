@@ -39,48 +39,85 @@ export default class BoardColumnsService {
     const board = await this.boardsService.getBoard(columnToUpdate.BoardId, userId);
 
     if (newIndex === columnToUpdate.index) {
-      return board.boardColumns;
+      return ;
     }
 
     if (newIndex < 1 || newIndex > board.totalColumns) {
       throw new HttpError(400, "Invalid movement of columns");
     }
-    /*If column was moved to the left (column.index > newIndex)
-      we move the columns one position to the right*/
-
-    /*If column was moved to the right (column.index < newIndex)
-    we move the columns one position to the left*/
-    let columns = await BoardColumn.findAll({
+    let columnsToUpdate = await BoardColumn.findAll({
       where: {
         BoardId: columnToUpdate.BoardId,
         index: {
           [Op.between]:
           columnToUpdate.index > newIndex
-              ? [newIndex, columnToUpdate.index - 1]
-              : [columnToUpdate.index + 1, newIndex],
+              ? [newIndex, columnToUpdate.index - 1] /*If column was moved to the left (column.index > newIndex) we move the columns one position to the right*/
+              : [columnToUpdate.index + 1, newIndex],/*If column was moved to the right (column.index < newIndex) we move the columns one position to the left*/
         },
       },
     });
     //We updated the columns index
-    let columnsUpdated = columns.map((currentColumn) => {
-      currentColumn.index =
-      columnToUpdate.index > newIndex
-         ? currentColumn.index + 1 
-         : currentColumn.index - 1;
-      return currentColumn;
-    });
-
-    columnToUpdate.index = newIndex;
-    columnsUpdated.push(columnToUpdate);
-
-    columnsUpdated.forEach(async (column) => {
-      await BoardColumn.update(column.dataValues, {
-        where: {
-          id: column.id,
+    columnsToUpdate.forEach(async (currentColumn) => {
+      await BoardColumn.update(
+        {
+          index:
+            columnToUpdate.index > newIndex
+              ? currentColumn.index + 1 /*If column was moved to the left (column.index > newIndex) we move the columns one position to the right*/
+              : currentColumn.index - 1,/*If column was moved to the right (column.index < newIndex) we move the columns one position to the left*/
         },
-      });
+        {
+          where: {
+            id: currentColumn.id,
+          },
+        }
+      );
     });
 
-    return columnsUpdated;
+    await BoardColumn.update({index: newIndex},{
+      where:{
+        id:columnToUpdate.id
+      }
+    });
+  }
+
+  async deleteColumn(columnId: string, userId: string) {
+    const columnToDelete = await this.getColumn(columnId);
+    const {BoardId}= columnToDelete
+    let totalColumns = await this.boardsService.getTotalColumns(BoardId, userId);
+
+    const deletedColumn = await BoardColumn.destroy({
+      where:{
+        id: columnId
+      }
+    });
+    
+    if(deletedColumn !== 1){
+      throw new HttpError(500,"Failed to delete the column.");
+    }
+
+    if(columnToDelete.index === totalColumns){
+      await this.boardsService.updateTotalColumns(BoardId,totalColumns-1);
+      return ;
+    } 
+
+    let columnsToUpdate = await BoardColumn.findAll({
+      where:{
+        BoardId,
+        index:{
+          [Op.between]: [columnToDelete.index+1,totalColumns]
+        }
+      }
+    });
+
+    columnsToUpdate.map(async (column)=>{
+      await BoardColumn.update({index:column.index-1},{
+        where:{
+          id: column.id
+        }
+      })
+    });
+
+    await this.boardsService.updateTotalColumns(BoardId,totalColumns-1);
+
   }
 }

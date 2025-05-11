@@ -18,7 +18,14 @@ export default class BoardColumnsController {
     async updateColumnIndex(req:Request, res:Response){
         const {id:userId} =(req as AuthRequest).user;
         const {id:columnId,newIndex} = matchedData(req); 
-        const column = await this.service.updateColumnIndex(columnId,newIndex,userId);        
-        res.status(200).json({ok:true,column})
+        await this.service.updateColumnIndex(columnId,newIndex,userId);        
+        res.status(200).json({ok:true})
+    }
+
+    async deleteColumn(req:Request, res:Response){
+        const {id:userId} =(req as AuthRequest).user;
+        const {id:columnId} = matchedData(req); 
+        await this.service.deleteColumn(columnId,userId);        
+        res.status(200).json({ok:true})
     }
 }
