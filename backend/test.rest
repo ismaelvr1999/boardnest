@@ -69,12 +69,12 @@ Content-Type: application/json
 }
 ###
 @idColumn = {{createBoardColumn.response.body.column.id}}
-# @name updateColumnIndex
-PATCH {{host}}/columns/{{idColumn}}/index
+# @name updateColumnPosition
+PATCH {{host}}/columns/{{idColumn}}/position
 Content-Type: application/json
 
 {
-    "index":1
+    "position":1
 }
 ###
 

@@ -15,10 +15,10 @@ export default class BoardColumnsController {
         const column = await this.service.createColumn(newColumn);        
         res.status(201).json({ok:true,column});
     }
-    async updateColumnIndex(req:Request, res:Response){
+    async updateColumnPosition(req:Request, res:Response){
         const {id:userId} =(req as AuthRequest).user;
-        const {id:columnId,index} = matchedData(req); 
-        await this.service.updateColumnIndex(columnId,index,userId);        
+        const {id:columnId,position} = matchedData(req); 
+        await this.service.updateColumnPosition(columnId,position,userId);        
         res.status(200).json({ok:true});
     }
 
@@ -32,7 +32,7 @@ export default class BoardColumnsController {
     async updateColumnName(req:Request, res:Response){
         const {id:userId} =(req as AuthRequest).user;
         const {id:columnId,name} = matchedData(req); 
-        const column = await this.service.updateColumnName(columnId,userId,name);        
-        res.status(200).json({ok:true,column});
+        await this.service.updateColumnName(columnId,userId,name);        
+        res.status(200).json({ok:true});
     }
 }

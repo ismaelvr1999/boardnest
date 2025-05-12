@@ -18,12 +18,12 @@ router.post(
 );
 
 router.patch(
-  "/columns/:id/index",
+  "/columns/:id/position",
   auth,
-  body("index").trim().notEmpty().isNumeric(),
+  body("position").trim().notEmpty().isNumeric(),
   param("id").isUUID(),
   validate,
-  controller.updateColumnIndex.bind(controller)
+  controller.updateColumnPosition.bind(controller)
 );
 
 router.delete(

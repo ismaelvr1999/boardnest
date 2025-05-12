@@ -40,7 +40,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false
     })
-    index!:number // TODO: change this to whatever because it's a mariadb's reserved word 
+    position!:number 
     
     @Default(0)
     @Column({

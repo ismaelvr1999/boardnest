@@ -22,7 +22,7 @@ export default class BoardsService {
       include: {
         model: BoardColumn,
       },
-      order: [[{ model: BoardColumn, as: "boardColumns" }, "index"]],
+      order: [[{ model: BoardColumn, as: "boardColumns" }, "position"]],
     });
     if (!(board instanceof Board)) {
       throw new HttpError(404, "Board not found");
