@@ -15,12 +15,14 @@ Content-Type: application/json
 ###
 
 # @name login
+# @prompt username
+# @prompt pass
 POST  {{host}}/users/login
 Content-Type: application/json
 
 {
-    "username": "",
-    "password": ""
+    "username": "{{username}}",
+    "password": "{{pass}}"
 }
 ###
 
@@ -68,16 +70,24 @@ Content-Type: application/json
 ###
 @idColumn = {{createBoardColumn.response.body.column.id}}
 # @name updateColumnIndex
-PUT  {{host}}/columns/{{idColumn}}/index
+PATCH {{host}}/columns/{{idColumn}}/index
 Content-Type: application/json
 
 {
-    "newIndex":1
+    "index":1
 }
 ###
 
 # @name deleteColumn
 DELETE {{host}}/columns/{{idColumn}}
 Content-Type: application/json
+###
 
+# @name updateColumnName
+PATCH {{host}}/columns/{{idColumn}}/name
+Content-Type: application/json
+
+{
+    "name":"Test updated name"
+}
 ###

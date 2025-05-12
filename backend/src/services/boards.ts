@@ -3,7 +3,6 @@ import BoardColumn from "../models/boardColumn";
 import User from "../models/user";
 import HttpError from "../utils/httpError";
 import usersService from "./users";
-import { Sequelize } from "sequelize";
 export default class BoardsService {
   constructor(private usersService: usersService) {}
   async createBoard(board: Board) {
@@ -62,7 +61,10 @@ export default class BoardsService {
     if (!(board instanceof Board)) {
       throw new HttpError(404, "Board not found");
     }
-    return user.$has("Board", board);
+    const userHasBoard = await user.$has("Board", board);
+    if(!userHasBoard){
+      throw new HttpError(403, "User is not allowed to modify this board");
+    }
   }
 
   async getTotalColumns(id: string, userId: string) {

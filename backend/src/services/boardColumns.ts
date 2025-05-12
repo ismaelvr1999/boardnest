@@ -120,4 +120,15 @@ export default class BoardColumnsService {
     await this.boardsService.updateTotalColumns(BoardId,totalColumns-1);
 
   }
+
+  async updateColumnName(columnId:string,userId:string,newName:string) {
+    const {BoardId} = await this.getColumn(columnId);
+    await this.boardsService.userHasBoard(BoardId,userId); 
+    
+    return BoardColumn.update({name:newName},{
+      where:{
+        id:columnId
+      }
+    });
+  }
 }

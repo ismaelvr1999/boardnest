@@ -17,10 +17,10 @@ router.post(
   controller.createColumn.bind(controller)
 );
 
-router.put(
+router.patch(
   "/columns/:id/index",
   auth,
-  body("newIndex").trim().notEmpty().isNumeric(),
+  body("index").trim().notEmpty().isNumeric(),
   param("id").isUUID(),
   validate,
   controller.updateColumnIndex.bind(controller)
@@ -34,6 +34,13 @@ router.delete(
   controller.deleteColumn.bind(controller)
 );
 
-
+router.patch(
+  "/columns/:id/name",
+  auth,
+  body("name").trim().notEmpty().isString(),
+  param("id").isUUID(),
+  validate,
+  controller.updateColumnName.bind(controller)
+);
 
 export default router;
