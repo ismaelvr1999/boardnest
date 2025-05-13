@@ -9,29 +9,34 @@ import {
   PrimaryKey,
   ForeignKey,
   BelongsTo,
-  HasMany,
 } from "sequelize-typescript";
-import User from "./user";
+import Board from "./board";
 import BoardColumn from "./boardColumn";
-import Task from "./task";
 
 @Table({
   timestamps: true,
-  tableName: "boards",
-  modelName: "Board",
+  tableName: "tasks",
+  modelName: "Task",
 })
-class Board extends Model<Board> {
+class Task extends Model<Task> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   id!: string;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => BoardColumn)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
-  UserId!: string;
+  ColumnId!: string;
+
+  @ForeignKey(() => Board)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  BoardId!: string;
 
   @Column({
     type: DataType.STRING,
@@ -39,15 +44,11 @@ class Board extends Model<Board> {
   })
   name!: string;
 
-  @Column(DataType.TEXT)
-  description!: string;
-
-  @Default(0)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  totalColumns!: number;
+  position!: number;
 
   @CreatedAt
   creationAt!: Date;
@@ -55,16 +56,15 @@ class Board extends Model<Board> {
   @UpdatedAt
   updatedAt!: Date;
 
-  @BelongsTo(() => User, {
-    onDelete: "CASCADE"
+  @BelongsTo(() => Board, {
+    onDelete: "CASCADE",
   })
-  user!: User;
+  board!: Board;
 
-  @HasMany(()=> BoardColumn)
-  boardColumns!: BoardColumn;
-
-  @HasMany(()=> Task)
-  tasks!: Task;
+  @BelongsTo(() => BoardColumn, {
+    onDelete: "CASCADE",
+  })
+  column!: Board;
 }
 
-export default Board;
+export default Task;

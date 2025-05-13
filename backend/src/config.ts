@@ -48,10 +48,12 @@ container.register({
   usersService: awilix.asClass(require("./services/users").default),
   boardsService: awilix.asClass(require("./services/boards").default),
   boardColumnsService: awilix.asClass(require("./services/boardColumns").default),
+  tasksService: awilix.asClass(require("./services/tasks").default),
 });
 //Controllers
 container.register({
   usersController: awilix.asClass(require("./controllers/user").default),
   boardsController: awilix.asClass(require("./controllers/boards").default),
   boardColumnsController: awilix.asClass(require("./controllers/boardColumns").default),
+  tasksController: awilix.asClass(require("./controllers/tasks").default),
 });

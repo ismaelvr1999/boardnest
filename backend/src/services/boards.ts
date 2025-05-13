@@ -1,5 +1,6 @@
 import Board from "../models/board";
 import BoardColumn from "../models/boardColumn";
+import Task from "../models/task";
 import User from "../models/user";
 import HttpError from "../utils/httpError";
 import usersService from "./users";
@@ -21,6 +22,7 @@ export default class BoardsService {
       },
       include: {
         model: BoardColumn,
+        include:[Task]
       },
       order: [[{ model: BoardColumn, as: "boardColumns" }, "position"]],
     });

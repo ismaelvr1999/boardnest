@@ -9,8 +9,10 @@ import {
     PrimaryKey,
     ForeignKey,
     BelongsTo,
+    HasMany,
 } from "sequelize-typescript";
   import Board from "./board";
+  import Task from "./task";
   
 @Table({
     timestamps: true,
@@ -40,7 +42,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false
     })
-    position!:number 
+    position!:number;
     
     @Default(0)
     @Column({
@@ -59,6 +61,9 @@ import {
       onDelete: "CASCADE"
     })
     board!: Board;
+
+    @HasMany(()=> Task)
+    tasks!: Task;
   }
   
   export default BoardColumn;

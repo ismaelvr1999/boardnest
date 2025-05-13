@@ -91,3 +91,29 @@ Content-Type: application/json
     "name":"Test updated name"
 }
 ###
+
+# @name addTask
+POST {{host}}/tasks
+Content-Type: application/json
+
+{
+    "name":"task test 3",
+    "ColumnId":"{{idColumn}}",
+    "BoardId":"{{idBoard}}"
+}
+###
+@taskId = {{addTask.response.body.task.id}}
+# @name getTask
+GET {{host}}/tasks/{{taskId}}
+Content-Type: application/json
+
+###
+
+# @name updateTaskPosition
+PATCH {{host}}/tasks/{{taskId}}/position
+Content-Type: application/json
+
+{
+    "position":1
+}
+###

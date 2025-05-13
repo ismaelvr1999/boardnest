@@ -9,4 +9,8 @@ router.use(boardsRouter);
 
 import boardColumnsRouter from "./boardColumns";
 router.use(boardColumnsRouter);
+
+import tasksRouter from "./tasks";
+router.use(tasksRouter);
+
 export default router;

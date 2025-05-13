@@ -25,17 +25,18 @@ export default class BoardColumnsService {
     return newColumn;
   }
 
-  async getColumn(columnId: string) {
+  async getColumn(columnId: string,userId:string) {
     const column = await BoardColumn.findByPk(columnId);
     if (!(column instanceof BoardColumn)) {
       throw new HttpError(404, "Column not found ");
     }
+    await this.boardsService.userHasBoard(column.BoardId,userId);
 
     return column;
   }
 
   async updateColumnPosition(columnId: string, newPosition: number, userId: string) {
-    const columnToUpdate = await this.getColumn(columnId);
+    const columnToUpdate = await this.getColumn(columnId,userId);
     const board = await this.boardsService.getBoard(columnToUpdate.BoardId, userId);
 
     if (newPosition === columnToUpdate.position) {
@@ -81,7 +82,7 @@ export default class BoardColumnsService {
   }
 
   async deleteColumn(columnId: string, userId: string) {
-    const columnToDelete = await this.getColumn(columnId);
+    const columnToDelete = await this.getColumn(columnId,userId);
     const {BoardId}= columnToDelete
     let totalColumns = await this.boardsService.getTotalColumns(BoardId, userId);
 
@@ -122,8 +123,7 @@ export default class BoardColumnsService {
   }
 
   async updateColumnName(columnId:string,userId:string,newName:string) {
-    const {BoardId} = await this.getColumn(columnId);
-    await this.boardsService.userHasBoard(BoardId,userId); 
+    await this.getColumn(columnId,userId); 
     
     await BoardColumn.update({name:newName},{
       where:{
