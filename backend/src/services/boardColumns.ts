@@ -110,7 +110,7 @@ export default class BoardColumnsService {
       }
     });
 
-    columnsToUpdate.map(async (column)=>{
+    columnsToUpdate.forEach(async (column)=>{
       await BoardColumn.update({position:column.position-1},{
         where:{
           id: column.id
@@ -131,4 +131,30 @@ export default class BoardColumnsService {
       }
     });
   }
+
+  async getTotalTasks(id:string) {
+    const column = await BoardColumn.findOne({
+      attributes: ["totalTasks"],
+      where:{
+        id
+      }
+    });
+
+    if (!(column instanceof BoardColumn)) {
+      throw new HttpError(404, "column not found");
+    }
+
+    return column.totalTasks;
+  }
+  async updateTotalTasks(id: string, total: number) {
+    await BoardColumn.update(
+      { totalTasks: total },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+  }
+
 }

@@ -29,4 +29,12 @@ export default class TasksController {
     const {id:taskId,position} = matchedData(req);
     await this.service.updateTaskPosition(taskId,position,userId);
     res.status(200).json({ ok: true });
-  }}
+  }
+
+  async deleteTask(req: Request, res: Response) {
+    const {id:userId} = (req as AuthRequest).user;
+    const {id:taskId} = matchedData(req);
+    await this.service.deleteTask(taskId,userId);
+    res.status(200).json({ ok: true });
+  }
+}

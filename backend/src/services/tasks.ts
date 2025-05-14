@@ -95,4 +95,41 @@ export default class TasksService {
         }
     });
   }
+
+  async deleteTask(taskId: string, userId:string) {
+    const taskToDeleted = await this.getTask(taskId,userId);
+    const totalTasks = await this.boardColumnsService.getTotalTasks(taskToDeleted.ColumnId);
+    const WasColumnDelete = await Task.destroy({
+      where:{
+        id: taskToDeleted.id 
+      }
+    });
+    if(WasColumnDelete !== 1){
+      throw new HttpError(500,"Failed to delete the task.");
+    }
+    if(taskToDeleted.position === totalTasks){
+      await this.boardColumnsService.updateTotalTasks(taskToDeleted.ColumnId,totalTasks-1);
+      return ;
+    } 
+
+    let tasksToUpdate = await Task.findAll({
+      where:{
+        ColumnId: taskToDeleted.ColumnId,
+        position:{
+          [Op.between]: [taskToDeleted.position+1,totalTasks]
+        }
+      }
+    });
+
+    tasksToUpdate.forEach(async (task)=>{
+      await Task.update({position:task.position-1},{
+        where:{
+          id: task.id
+        }
+      })
+    });
+
+    await this.boardColumnsService.updateTotalTasks(taskToDeleted.ColumnId,totalTasks-1);
+
+  }
 }

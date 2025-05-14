@@ -52,7 +52,7 @@ GET   {{host}}/boards/
 ###
 
 # @name getBoard
-GET   {{host}}/boards/{{idBoard}}
+GET   {{host}}/boards/32ac1c09-5f54-43b9-bada-03987028ef28
 ###
 
 # @name deleteBoard
@@ -116,4 +116,8 @@ Content-Type: application/json
 {
     "position":1
 }
+###
+
+# @name deleteTask
+DELETE {{host}}/tasks/{{taskId}}
 ###

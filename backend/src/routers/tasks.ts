@@ -12,14 +12,14 @@ router.post("/tasks/",
     body("name").trim().notEmpty().isString(),
     validate,
     controller.addTask.bind(controller)
-)
+);
 
 router.get("/tasks/:id",
     auth,
     param("id").trim().notEmpty().isUUID(),
     validate,
     controller.getTask.bind(controller)
-)
+);
 
 router.patch("/tasks/:id/position",
     auth,
@@ -27,6 +27,13 @@ router.patch("/tasks/:id/position",
     body("position").trim().notEmpty().isString(),
     validate,
     controller.updateTaskPosition.bind(controller)
-)
+);
+
+router.delete("/tasks/:id",
+    auth,
+    param("id").trim().notEmpty().isUUID(),
+    validate,
+    controller.deleteTask.bind(controller)
+);
 
 export default router;
