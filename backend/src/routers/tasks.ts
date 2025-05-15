@@ -24,7 +24,8 @@ router.get("/tasks/:id",
 router.patch("/tasks/:id/position",
     auth,
     param("id").trim().notEmpty().isUUID(),
-    body("position").trim().notEmpty().isString(),
+    body("newPosition").trim().notEmpty().isString(),
+    body("ColumnId").trim().notEmpty().isUUID(),
     validate,
     controller.updateTaskPosition.bind(controller)
 );

@@ -64,8 +64,8 @@ POST  {{host}}/columns/
 Content-Type: application/json
 
 {
-    "name": "column test",
-    "BoardId": "{{idBoard}}"
+    "name": "column test 2",
+    "BoardId": "32ac1c09-5f54-43b9-bada-03987028ef28"
 }
 ###
 @idColumn = {{createBoardColumn.response.body.column.id}}
@@ -97,9 +97,9 @@ POST {{host}}/tasks
 Content-Type: application/json
 
 {
-    "name":"task test 3",
-    "ColumnId":"{{idColumn}}",
-    "BoardId":"{{idBoard}}"
+    "name":"task test 3 colum 2",
+    "ColumnId":"b3b25798-f7fe-459a-b6af-c6907a923dd7",
+    "BoardId":"32ac1c09-5f54-43b9-bada-03987028ef28"
 }
 ###
 @taskId = {{addTask.response.body.task.id}}
@@ -110,11 +110,12 @@ Content-Type: application/json
 ###
 
 # @name updateTaskPosition
-PATCH {{host}}/tasks/{{taskId}}/position
+PATCH {{host}}/tasks/7fda0278-2b14-4e3f-979c-525942dc49b4/position
 Content-Type: application/json
 
 {
-    "position":1
+    "newPosition":1,
+    "ColumnId":"b3b25798-f7fe-459a-b6af-c6907a923dd7"
 }
 ###
 

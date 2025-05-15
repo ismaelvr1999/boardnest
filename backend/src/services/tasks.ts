@@ -4,6 +4,7 @@ import BoardColumnsService from "./boardColumns";
 import BoardsService from "./boards";
 import HttpError from "../utils/httpError";
 import { Op } from "sequelize";
+import { AddTask } from "../dto/tasks.dto";
 
 export default class TasksService {
   constructor(
@@ -11,7 +12,7 @@ export default class TasksService {
     private boardsService: BoardsService
   ) {}
 
-  async addTask(task: Task, userId: string) {
+  async addTask(task: AddTask, userId: string) {
     let { totalTasks } = await this.boardColumnsService.getColumn(
       task.ColumnId,
       userId
@@ -38,36 +39,46 @@ export default class TasksService {
     return task;
   }
 
-  async updateTaskPosition(
-    taskId: string,
-    newPosition: number,
-    userId: string
-  ) {
-    const taskToUpdate = await this.getTask(taskId, userId);
-    const column = await this.boardColumnsService.getColumn(
-      taskToUpdate.ColumnId,
-      userId
-    );
-    if (newPosition === taskToUpdate.position) {
-      return;
+  async updateTaskPosition(task:{id: string,newPosition: number,ColumnId:string},userId: string) {
+    let taskToUpdate = await this.getTask(task.id, userId);
+    let column:BoardColumn;
+
+    if(taskToUpdate.ColumnId !== task.ColumnId){
+      console.log("updated column too");
+      taskToUpdate = await this.addTask({name:taskToUpdate.name,BoardId:taskToUpdate.BoardId,ColumnId:task.ColumnId},userId);
+      column = await this.boardColumnsService.getColumn(
+        taskToUpdate.ColumnId,
+        userId
+      );
+      await this.deleteTask(task.id,userId);
     }
-    if (newPosition < 1 || newPosition > column.totalTasks) {
-      throw new HttpError(400, "Invalid movement of columns");
+    else{
+      column = await this.boardColumnsService.getColumn(
+        taskToUpdate.ColumnId,
+        userId
+      );
     }
 
+    if (task.newPosition === taskToUpdate.position) {
+      return;
+    }
+    if (task.newPosition < 1 || task.newPosition > column.totalTasks) {
+      throw new HttpError(400, "Invalid movement of columns");
+    }
+   
     let tasksToUpdate = await Task.findAll({
       where: {
         ColumnId: taskToUpdate.ColumnId,
         position: {
           [Op.between]:
-            taskToUpdate.position > newPosition
+            taskToUpdate.position > task.newPosition
               ? [
-                  newPosition,
+                  task.newPosition,
                   taskToUpdate.position - 1,
                 ] /*If task was moved down (column.position > newposition) we move the task one position up*/
               : [
                   taskToUpdate.position + 1,
-                  newPosition,
+                  task.newPosition,
                 ] /*If task was moved up (column.position < newposition) we move the tasks one position down*/,
         },
       },
@@ -77,7 +88,7 @@ export default class TasksService {
       await Task.update(
         {
           position:
-            taskToUpdate.position > newPosition
+            taskToUpdate.position > task.newPosition
               ? currentTask.position + 1
               : currentTask.position - 1,
         },
@@ -89,7 +100,7 @@ export default class TasksService {
       );
     });
 
-    await Task.update({position:newPosition},{
+    await Task.update({position:task.newPosition},{
         where:{
             id:taskToUpdate.id
         }

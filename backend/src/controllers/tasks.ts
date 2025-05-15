@@ -3,6 +3,7 @@ import { matchedData } from "express-validator";
 import { AuthRequest } from "../types/authenticate.types";
 import TasksService from "../services/tasks";
 import Task from "../models/task";
+import { AddTask } from "../dto/tasks.dto";
 
 export default class TasksController {
   private service: TasksService;
@@ -12,7 +13,7 @@ export default class TasksController {
 
   async addTask(req: Request, res: Response) {
     const { id } = (req as AuthRequest).user;
-    const newTask: Task = matchedData(req);
+    const newTask: AddTask = matchedData(req);
     const task = await this.service.addTask(newTask, id);
     res.status(201).json({ ok: true, task });
   }
@@ -26,8 +27,8 @@ export default class TasksController {
 
   async updateTaskPosition(req: Request, res: Response) {
     const {id:userId} = (req as AuthRequest).user;
-    const {id:taskId,position} = matchedData(req);
-    await this.service.updateTaskPosition(taskId,position,userId);
+    const task: {id: string,newPosition: number,ColumnId:string} = matchedData(req);
+    await this.service.updateTaskPosition(task,userId);
     res.status(200).json({ ok: true });
   }
 

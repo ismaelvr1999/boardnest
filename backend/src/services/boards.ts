@@ -22,7 +22,8 @@ export default class BoardsService {
       },
       include: {
         model: BoardColumn,
-        include:[Task]
+        include:[Task],
+        order: [[{ model:Task, as: "tasks" }, "position"]]
       },
       order: [[{ model: BoardColumn, as: "boardColumns" }, "position"]],
     });
