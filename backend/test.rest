@@ -35,10 +35,10 @@ Content-Type: application/json
     "description":"board test"
 }
 ###
-@idBoard = {{createBoard.response.body.board.id}}
+@boardId = {{createBoard.response.body.board.id}}
 
 # @name updateBoard
-PUT  {{host}}/boards/{{idBoard}}
+PUT  {{host}}/boards/{{boardId}}
 Content-Type: application/json
 
 {
@@ -52,11 +52,11 @@ GET   {{host}}/boards/
 ###
 
 # @name getBoard
-GET   {{host}}/boards/32ac1c09-5f54-43b9-bada-03987028ef28
+GET   {{host}}/boards/{{boardId}}
 ###
 
 # @name deleteBoard
-DELETE {{host}}/boards/{{idBoard}}
+DELETE {{host}}/boards/{{boardId}}
 ###
 
 # @name createBoardColumn
@@ -64,13 +64,13 @@ POST  {{host}}/columns/
 Content-Type: application/json
 
 {
-    "name": "column test 2",
-    "BoardId": "32ac1c09-5f54-43b9-bada-03987028ef28"
+    "name": "column test 1",
+    "BoardId": "{{boardId}}"
 }
 ###
-@idColumn = {{createBoardColumn.response.body.column.id}}
+@columnId = {{createBoardColumn.response.body.column.id}}
 # @name updateColumnPosition
-PATCH {{host}}/columns/{{idColumn}}/position
+PATCH {{host}}/columns/{{columnId}}/position
 Content-Type: application/json
 
 {
@@ -79,12 +79,12 @@ Content-Type: application/json
 ###
 
 # @name deleteColumn
-DELETE {{host}}/columns/{{idColumn}}
+DELETE {{host}}/columns/{{columnId}}
 Content-Type: application/json
 ###
 
 # @name updateColumnName
-PATCH {{host}}/columns/{{idColumn}}/name
+PATCH {{host}}/columns/{{columnId}}/name
 Content-Type: application/json
 
 {
@@ -97,9 +97,9 @@ POST {{host}}/tasks
 Content-Type: application/json
 
 {
-    "name":"task test 3 colum 2",
-    "ColumnId":"b3b25798-f7fe-459a-b6af-c6907a923dd7",
-    "BoardId":"32ac1c09-5f54-43b9-bada-03987028ef28"
+    "name":"task test 1",
+    "ColumnId":"{{columnId}}",
+    "BoardId":"{{boardId}}"
 }
 ###
 @taskId = {{addTask.response.body.task.id}}
@@ -110,12 +110,12 @@ Content-Type: application/json
 ###
 
 # @name updateTaskPosition
-PATCH {{host}}/tasks/7fda0278-2b14-4e3f-979c-525942dc49b4/position
+PATCH {{host}}/tasks/{{taskId}}/position
 Content-Type: application/json
 
 {
     "newPosition":1,
-    "ColumnId":"b3b25798-f7fe-459a-b6af-c6907a923dd7"
+    "newColumnId":"{{columnId}}"
 }
 ###
 

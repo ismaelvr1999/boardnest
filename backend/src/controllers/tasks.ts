@@ -2,8 +2,7 @@ import { Response, Request } from "express";
 import { matchedData } from "express-validator";
 import { AuthRequest } from "../types/authenticate.types";
 import TasksService from "../services/tasks";
-import Task from "../models/task";
-import { AddTask } from "../dto/tasks.dto";
+import { AddTask, UpdateTaskPosition } from "../dto/tasks.dto";
 
 export default class TasksController {
   private service: TasksService;
@@ -27,7 +26,7 @@ export default class TasksController {
 
   async updateTaskPosition(req: Request, res: Response) {
     const {id:userId} = (req as AuthRequest).user;
-    const task: {id: string,newPosition: number,ColumnId:string} = matchedData(req);
+    const task:UpdateTaskPosition = matchedData(req);
     await this.service.updateTaskPosition(task,userId);
     res.status(200).json({ ok: true });
   }
