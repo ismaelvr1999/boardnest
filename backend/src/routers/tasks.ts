@@ -30,6 +30,14 @@ router.patch("/tasks/:id/position",
     controller.updateTaskPosition.bind(controller)
 );
 
+router.patch("/tasks/:id/name",
+    auth,
+    param("id").trim().notEmpty().isUUID(),
+    body("name").trim().notEmpty().isString(),
+    validate,
+    controller.updateTaskName.bind(controller)
+);
+
 router.delete("/tasks/:id",
     auth,
     param("id").trim().notEmpty().isUUID(),

@@ -119,6 +119,15 @@ Content-Type: application/json
 }
 ###
 
+# @name updateTaskName
+PATCH {{host}}/tasks/{{taskId}}/name
+Content-Type: application/json
+
+{
+    "name":"Updated name"
+}
+###
+
 # @name deleteTask
 DELETE {{host}}/tasks/{{taskId}}
 ###

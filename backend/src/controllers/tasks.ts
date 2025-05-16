@@ -37,4 +37,11 @@ export default class TasksController {
     await this.service.deleteTask(taskId,userId);
     res.status(200).json({ ok: true });
   }
+
+  async updateTaskName(req: Request, res: Response) {
+    const {id:userId} = (req as AuthRequest).user;
+    const {id:taskId,name} = matchedData(req);
+    await this.service.updateTaskName(taskId,name,userId);
+    res.status(200).json({ ok: true });
+  }
 }

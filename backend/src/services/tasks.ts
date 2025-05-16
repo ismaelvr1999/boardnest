@@ -139,4 +139,15 @@ export default class TasksService {
     await this.boardColumnsService.updateTotalTasks(taskToDeleted.ColumnId,totalTasks-1);
 
   }
+
+  async updateTaskName(id:string,name:string,userId:string){
+    await this.getTask(id,userId);
+    
+    await Task.update({name},{
+      where:{
+        id
+      }
+    });
+
+  }
 }
