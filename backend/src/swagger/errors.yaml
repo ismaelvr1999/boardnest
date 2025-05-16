@@ -1,0 +1,53 @@
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                example: false
+              message:
+                type: string
+              details:
+                type: string
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                example: false
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized, authentication failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                example: false
+              message:
+                type: string
+    Forbidden:
+      description: Forbidden action
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                example: false
+              message:
+                type: string
+

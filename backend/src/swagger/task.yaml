@@ -1,0 +1,286 @@
+/api/tasks:
+  post:
+    summary: Create a new task and associate it with a column and board
+    tags:
+      - Task
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the task
+              ColumnId:
+                type: string
+                format: uuid
+                description: The ID of the column to associate with the task
+              BoardId:
+                type: string
+                format: uuid
+                description: The ID of the board to associate with the task
+    responses:
+      200:
+        description: Successfully created the task
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                task:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    ColumnId:
+                      type: string
+                      format: uuid
+                    BoardId:
+                      type: string
+                      format: uuid
+                    position:
+                      type: integer
+                    creationAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Column or Board not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/tasks/{taskId}:
+  get:
+    summary: Retrieve details of a specific task by its ID
+    tags:
+      - Task
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the task to retrieve
+    responses:
+      200:
+        description: Successfully retrieved the task details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                task:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    ColumnId:
+                      type: string
+                      format: uuid
+                    BoardId:
+                      type: string
+                      format: uuid
+                    position:
+                      type: integer
+                    creationAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Task not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+  delete:
+    summary: Delete a specific task by its ID
+    tags:
+      - Task
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the task to delete
+    responses:
+      200:
+        description: Task successfully deleted
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Task not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/tasks/{taskId}/position:
+  patch:
+    summary: Update the position and column of a specific task
+    tags:
+      - Task
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the task to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              newPosition:
+                type: integer
+                description: The new position of the task in the column
+              newColumnId:
+                type: string
+                format: uuid
+                description: The ID of the column to move the task to
+    responses:
+      200:
+        description: Successfully updated the task's position and column
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Task or Column not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/tasks/{taskId}/name:
+  patch:
+    summary: Update the name of a specific task
+    tags:
+      - Task
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the task to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The new name of the task
+    responses:
+      200:
+        description: Successfully updated the task name
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Task not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+

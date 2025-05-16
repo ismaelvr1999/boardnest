@@ -17,7 +17,7 @@ const options = {
     },
   },
   apis: [
-    path.join(__dirname, "/swagger/*.yarn"),
+    path.join(__dirname, "/swagger/*.yaml"),
   ],
   components: {
     securitySchemes: {

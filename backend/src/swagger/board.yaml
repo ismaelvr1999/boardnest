@@ -1,0 +1,287 @@
+/api/boards/:
+  post:
+    summary: Create a new board
+    tags:
+      - Board
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+    responses:
+      200:
+        description: Successfully created board
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                board:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    totalColumns:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    UserId:
+                      type: string
+                      format: uuid
+                    updatedAt:
+                      type: string
+                      format: date-time
+                    creationAt:
+                      type: string
+                      format: date-time
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      500:
+        $ref: "#/components/responses/InternalServerError"
+  get:
+      summary: Get all boards for the current user
+      tags:
+        - Board
+      responses:
+        200:
+          description: Successfully retrieved user boards
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  boards:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        UserId:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        totalColumns:
+                          type: integer
+                        creationAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+
+/api/boards/{boardId}:
+  put:
+    summary: Update an existing board
+    tags:
+      - Board
+    parameters:
+      - in: path
+        name: boardId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the board to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+    responses:
+      200:
+        description: Successfully updated board
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Forbidden"
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+  get:
+    summary: Get a specific board by its ID
+    tags:
+      - Board
+    parameters:
+      - in: path
+        name: boardId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the board to retrieve
+    responses:
+      200:
+        description: Successfully retrieved board with columns and tasks
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                board:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    UserId:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    totalColumns:
+                      type: integer
+                    creationAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                    boardColumns:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          BoardId:
+                            type: string
+                            format: uuid
+                          name:
+                            type: string
+                          position:
+                            type: integer
+                          totalTasks:
+                            type: integer
+                          creationAt:
+                            type: string
+                            format: date-time
+                          updatedAt:
+                            type: string
+                            format: date-time
+                          tasks:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                ColumnId:
+                                  type: string
+                                  format: uuid
+                                BoardId:
+                                  type: string
+                                  format: uuid
+                                name:
+                                  type: string
+                                position:
+                                  type: integer
+                                creationAt:
+                                  type: string
+                                  format: date-time
+                                updatedAt:
+                                  type: string
+                                  format: date-time
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Board not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+  
+  delete:
+    summary: Delete a specific board by its ID
+    tags:
+      - Board
+    parameters:
+      - in: path
+        name: boardId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the board to delete
+    responses:
+      200:
+        description: Successfully deleted the board
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Board not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"

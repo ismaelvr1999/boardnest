@@ -1,0 +1,211 @@
+/api/columns/:
+  post:
+    summary: Create a new column for a specific board
+    tags:
+      - Column
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              BoardId:
+                type: string
+                format: uuid
+    responses:
+      200:
+        description: Successfully created column for the board
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                column:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    BoardId:
+                      type: string
+                      format: uuid
+                    totalTasks:
+                      type: integer
+                    position:
+                      type: integer
+                    creationAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Board not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+/api/columns/{columnId}/position:
+  patch:
+    summary: Update the position of a specific column
+    tags:
+      - Column
+    parameters:
+      - in: path
+        name: columnId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the column whose position needs to be updated
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              position:
+                type: integer
+                description: The new position of the column
+    responses:
+      200:
+        description: Successfully updated the position of the column
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Column not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/columns/{columnId}:
+  delete:
+    summary: Delete a specific column by its ID
+    tags:
+      - Column
+    parameters:
+      - in: path
+        name: columnId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the column to delete
+    responses:
+      200:
+        description: Successfully deleted the column
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Column not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/columns/{columnId}/name:
+  patch:
+    summary: Update the name of a specific column
+    tags:
+      - Column
+    parameters:
+      - in: path
+        name: columnId
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID of the column to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The new name for the column
+    responses:
+      200:
+        description: Successfully updated the name of the column
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      404:
+        description: Column not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalServerError"
