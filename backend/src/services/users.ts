@@ -1,3 +1,4 @@
+import { CreateUser } from "../dto/users.dto";
 import User from "../models/user";
 import HttpError from "../utils/httpError";
 import bcrypt from "bcrypt-ts";
@@ -6,7 +7,7 @@ import jwt from "jsonwebtoken";
 export default class usersService {
   constructor(private jwtSecret: string) {}
 
-  async signUp(user: User) {
+  async signUp(user: CreateUser) {
     user.password = await bcrypt.hash(user.password, 10);
     await User.create(user).catch((err) => {
       if (err.name === "SequelizeUniqueConstraintError") {

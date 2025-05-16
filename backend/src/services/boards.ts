@@ -1,3 +1,4 @@
+import { CreateBoard, UpdateBoard } from "../dto/boards.dto";
 import Board from "../models/board";
 import BoardColumn from "../models/boardColumn";
 import Task from "../models/task";
@@ -6,7 +7,7 @@ import HttpError from "../utils/httpError";
 import usersService from "./users";
 export default class BoardsService {
   constructor(private usersService: usersService) {}
-  async createBoard(board: Board) {
+  async createBoard(board: CreateBoard) {
     return await Board.create(board);
   }
   async getUserBoards(id: string) {
@@ -48,7 +49,7 @@ export default class BoardsService {
   async updateBoard(
     userId: string,
     boardId: string,
-    board: { name: string; description: string }
+    board: UpdateBoard
   ) {
     return Board.update(board, {
       where: {

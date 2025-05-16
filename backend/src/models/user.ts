@@ -11,13 +11,13 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import Board from "./board";
-
+import { CreateUser } from "../dto/users.dto";
 @Table({
   timestamps: true,
   tableName: "users",
   modelName: "User",
 })
-class User extends Model<User> {
+class User extends Model<User,CreateUser> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

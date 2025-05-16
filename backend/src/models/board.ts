@@ -14,13 +14,14 @@ import {
 import User from "./user";
 import BoardColumn from "./boardColumn";
 import Task from "./task";
+import { CreateBoard } from "../dto/boards.dto";
 
 @Table({
   timestamps: true,
   tableName: "boards",
   modelName: "Board",
 })
-class Board extends Model<Board> {
+class Board extends Model<Board,CreateBoard> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

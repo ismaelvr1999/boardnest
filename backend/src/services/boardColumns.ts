@@ -3,10 +3,11 @@ import Board from "../models/board";
 import HttpError from "../utils/httpError";
 import BoardsService from "./boards";
 import { Op } from "sequelize";
+import { CreateColumn } from "../dto/boardColumns.dto";
 export default class BoardColumnsService {
   constructor(private boardsService: BoardsService) {}
 
-  async createColumn(boardColumn: BoardColumn) {
+  async createColumn(boardColumn: CreateColumn) {
     const board = await Board.findByPk(boardColumn.BoardId);
     if (!board) {
       throw new HttpError(404, "Board does not exist");
@@ -52,8 +53,8 @@ export default class BoardColumnsService {
         position: {
           [Op.between]:
           columnToUpdate.position > newPosition
-              ? [newPosition, columnToUpdate.position - 1] /*If column was moved to the left (column.position > newposition) we move the columns one position to the right*/
-              : [columnToUpdate.position + 1, newPosition],/*If column was moved to the right (column.position < newposition) we move the columns one position to the left*/
+              ? [newPosition, columnToUpdate.position - 1] //If (column.position > newposition) Get columns from newPosition to currentPosition 
+              : [columnToUpdate.position + 1, newPosition],///If (column.position < newposition)  Get tasks from currentPosition  to newPosition 
         },
       },
     });
@@ -63,8 +64,8 @@ export default class BoardColumnsService {
         {
           position:
             columnToUpdate.position > newPosition
-              ? currentColumn.position + 1 /*If column was moved to the left (column.position > newposition) we move the columns one position to the right*/
-              : currentColumn.position - 1,/*If column was moved to the right (column.position < newposition) we move the columns one position to the left*/
+              ? currentColumn.position + 1 //If (column.position > newposition) increase the position
+              : currentColumn.position - 1,//If (column.position < newposition) decrease the position
         },
         {
           where: {

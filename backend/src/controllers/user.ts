@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import usersService from "../services/users";
 import { matchedData } from "express-validator";
-import User from "../models/user";
+import { CreateUser } from "../dto/users.dto";
 
 export default class usersController {
   private service: usersService;
@@ -11,7 +11,7 @@ export default class usersController {
   }
 
   async signUp(req:Request, res: Response) {
-    const newUser:User = matchedData(req);
+    const newUser:CreateUser = matchedData(req);
     await this.service.signUp(newUser);
     res.status(201).json({ok:true})
   }

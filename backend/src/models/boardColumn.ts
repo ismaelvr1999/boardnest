@@ -13,13 +13,14 @@ import {
 } from "sequelize-typescript";
   import Board from "./board";
   import Task from "./task";
+import { CreateColumn } from "../dto/boardColumns.dto";
   
 @Table({
     timestamps: true,
     tableName: "board_columns",
     modelName: "BoardColumn",
   })
-  class BoardColumn extends Model<BoardColumn> {
+  class BoardColumn extends Model<BoardColumn,CreateColumn> {
     @PrimaryKey
     @Default(DataType.UUIDV4)
     @Column(DataType.UUID)
