@@ -6,6 +6,7 @@ import HttpError from "./utils/httpError";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "node:path";
+import cors from "cors"
 
 const app = express();
 const options = {
@@ -38,6 +39,7 @@ const options = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.use(cors())
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 app.use("/api",routers);
