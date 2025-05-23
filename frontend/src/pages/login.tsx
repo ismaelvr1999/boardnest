@@ -1,4 +1,4 @@
-import Form from "../features/Login/components/Form";
+import Form from "../features/login/components/form";
 function Login() {
   return (
     <>

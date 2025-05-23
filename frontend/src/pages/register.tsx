@@ -1,4 +1,4 @@
-import Form from "../features/Register/Form";
+import Form from "../features/register/components/form";
 
 function Register(){
     return (

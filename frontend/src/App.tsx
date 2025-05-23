@@ -1,8 +1,8 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Login from './pages/Login'
-import AuthLayout from './layout/AuthLayout';
-import Register from './pages/Register';
+import AuthLayout from './layout/authLayout';
+import Register from './pages/register';
+import Login from './pages/login';
 function App() {
 
   return (
