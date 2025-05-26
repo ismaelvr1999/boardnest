@@ -18,10 +18,10 @@ export default class usersController {
 
   async login(req:Request, res:Response){
     const {username, password} = matchedData(req);
-    const token = await this.service.login(username,password);
+    const {token,profile} = await this.service.login(username,password);
     res.cookie("auth",token,{
       httpOnly:true
     });
-    res.status(200).json({ok:true})
+    res.status(200).json({ok:true,profile})
   }
 }

@@ -2,12 +2,16 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { signIn } from "./login.api";
 import type { FormLoginValues } from "./login.types";
+import { useAuth } from "../../contexts/authContext";
 function useLogin(){
+   const {setIsAuthenticated,setUser} = useAuth();
     const { register, handleSubmit } = useForm<FormLoginValues>();
     const onSubmit: SubmitHandler<FormLoginValues> = async (d) => {
       try {
-        await signIn(d);
+        const resp = await signIn(d);
         toast.success(`Login successfully`);
+        setIsAuthenticated(true);
+        setUser(resp.data.profile);
       } catch (error) {
         if(error instanceof Error){
           toast.error(error.message);

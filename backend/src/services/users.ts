@@ -32,22 +32,26 @@ export default class usersService {
     if (!isPassValid) {
       throw new HttpError(401, "Password incorrect");
     }
+    const profile = {
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }
+    const payload = {
+      id: user.id,
+      ...profile
+    };
 
     const token = jwt.sign(
-      {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      },
+      payload,
       this.jwtSecret,
       {
         expiresIn:"7d"
       }
     );
 
-    return token;
+    return {token,profile};
   }
 
   async getUser(id: string)  {
