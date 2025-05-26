@@ -10,6 +10,7 @@ const {
   DB_NAME,
   NODE_ENV,
   JWT_SECRET,
+  FRONTEND_URL
 } = process.env;
 
 const dbConfig = {
@@ -28,7 +29,9 @@ export default container;
 container.register({
   dbConfig: awilix.asValue(dbConfig),
   serverPort: awilix.asValue(PORT),
-  jwtSecret: awilix.asValue(JWT_SECRET)
+  jwtSecret: awilix.asValue(JWT_SECRET),
+  frontendURL: awilix.asValue(FRONTEND_URL)
+
 });
 // Sequelize singleton and debugging varible
 container.register({

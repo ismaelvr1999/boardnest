@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import usersService from "../services/users";
 import { matchedData } from "express-validator";
 import { CreateUser } from "../dto/users.dto";
+import { AuthRequest } from "../types/authenticate.types";
 
 export default class usersController {
   private service: usersService;
@@ -20,8 +21,22 @@ export default class usersController {
     const {username, password} = matchedData(req);
     const {token,profile} = await this.service.login(username,password);
     res.cookie("auth",token,{
-      httpOnly:true
+      httpOnly:true,
+      secure: false,
+      sameSite:"lax",
+      path:"/"
     });
+    res.status(200).json({ok:true,profile})
+  }
+
+  async verifyToken(req:Request, res:Response){
+    const {userName,firstName,lastName,email} =(req as AuthRequest).user;
+    const profile = {
+      userName,
+      firstName,
+      lastName,
+      email
+    }
     res.status(200).json({ok:true,profile})
   }
 }

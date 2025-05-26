@@ -26,6 +26,11 @@ Content-Type: application/json
 }
 ###
 
+# @name verifyToken
+GET {{host}}/users/verify
+Content-Type: application/json
+###
+
 # @name createBoard
 POST  {{host}}/boards/
 Content-Type: application/json

@@ -1,47 +1,41 @@
-import { createContext, useState, type Dispatch, type SetStateAction , useContext} from "react";
+import { createContext, useState, useContext,useEffect} from "react";
 import Cookies from "js-cookie";
-type AuthContextValues = {
-    user: UserResp;
-    setUser: Dispatch<UserResp>;
-    logout: () => void;
-    setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
-    isAuthenticated: boolean;
-} | null; 
+import axios from "../lib/axios";
+import type { AuthContexType, AuthProviderType,User} from "../types/auth.types";
 
-type UserResp = {
-    username:string;
-    firstName: string;
-    lastName:string;
-    email:string;
-} | null;
+const AuthContext = createContext<AuthContexType>(null);
 
-interface AuthProviderProps {
-    children: React.ReactNode;
-}
-const AuthContext = createContext<AuthContextValues>(null);
-export const useAuth = () => {
+export const UseAuth = () => {
     const context = useContext(AuthContext);
     if (!context) throw new Error("useAuth must be used within a AuthProvider");
     return context;
   };
 
 
-export  function AuthProvider ({children}:AuthProviderProps) {
-    const [user,setUser] = useState<UserResp>(
-        {
-            username:"",
-            firstName: "",
-            lastName:"",
-            email:""
-        }
-    );
+export const AuthProvider:AuthProviderType = ({children})=> {
+    const [user,setUser] = useState<User>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    
+    const [loading,setLoading] = useState<boolean>(true);
     const logout = () => {
         Cookies.remove("auth");
         setUser(null);
         setIsAuthenticated(false);
       };
+      
+      useEffect(()=>{
+
+        const verify = async ()=>{
+            const result = await axios.get("users/verify");
+            setUser(result.data.profile);
+            setIsAuthenticated(true);
+            setLoading(false);
+        }
+        verify().catch((error)=>{
+            setLoading(false);
+            setIsAuthenticated(false);
+            console.log(error.message);
+        })
+      },[]);
 
     return (
         <AuthContext.Provider value={{
@@ -49,7 +43,8 @@ export  function AuthProvider ({children}:AuthProviderProps) {
             isAuthenticated,
             logout,
             setUser,
-            setIsAuthenticated
+            setIsAuthenticated,
+            loading
         }}>
             {children}
         </AuthContext.Provider>

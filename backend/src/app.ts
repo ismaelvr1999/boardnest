@@ -7,7 +7,9 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "node:path";
 import cors from "cors"
+import container from "./config";
 
+const frontendURL = container.resolve("frontendURL");
 const app = express();
 const options = {
   definition: {
@@ -39,7 +41,10 @@ const options = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(cors())
+app.use(cors({
+  origin: frontendURL,
+  credentials: true
+}));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 app.use("/api",routers);
