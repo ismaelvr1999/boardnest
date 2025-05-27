@@ -1,8 +1,8 @@
-import Form from "../features/login/components/form";
+import LoginForm from "../features/auth/components/loginForm"
 function Login() {
   return (
     <>
-    <Form/>
+    <LoginForm/>
     </>
   );
 }

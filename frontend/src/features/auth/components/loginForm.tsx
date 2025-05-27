@@ -1,4 +1,4 @@
-import useLogin from "../login.hook";
+import {useLogin} from "../auth.hooks";
 import Toast from "../../../components/toast";
 function Form() {
   const {handleSubmit,onSubmit,register} = useLogin();

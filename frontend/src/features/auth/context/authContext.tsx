@@ -1,7 +1,7 @@
 import { createContext, useState, useContext,useEffect} from "react";
 import Cookies from "js-cookie";
-import axios from "../lib/axios";
-import type { AuthContexType, AuthProviderType,User} from "../types/auth.types";
+import axios from "../../../lib/axios";
+import type { AuthContexType, AuthProviderType,User} from "../auth.types";
 
 const AuthContext = createContext<AuthContexType>(null);
 

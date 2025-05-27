@@ -3,7 +3,7 @@ import './App.css';
 import AuthLayout from './layout/authLayout';
 import Register from './pages/register';
 import Login from './pages/login';
-import { AuthProvider } from './contexts/authContext';
+import { AuthProvider } from './features/auth/context/authContext';
 import ProtectedRouters from './components/protectedRouters';
 function App() {
 

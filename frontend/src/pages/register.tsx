@@ -1,9 +1,9 @@
-import Form from "../features/register/components/form";
+import ResgisterForm from "../features/auth/components/registerForm";
 
 function Register(){
     return (
         <>
-            <Form/>
+            <ResgisterForm/>
         </>
     )
 } 
