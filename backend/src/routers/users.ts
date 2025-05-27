@@ -22,4 +22,9 @@ router.get("/users/verify",
     auth,
     controller.verifyToken.bind(controller)
 )
+
+router.get("/users/logout",
+    auth,
+    controller.logout.bind(controller)
+)
 export default router;

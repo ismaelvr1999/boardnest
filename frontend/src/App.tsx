@@ -5,6 +5,7 @@ import Register from './pages/register';
 import Login from './pages/login';
 import { AuthProvider } from './features/auth/context/authContext';
 import ProtectedRouters from './components/protectedRouters';
+import Boards from './pages/boards';
 function App() {
 
   return (
@@ -13,10 +14,11 @@ function App() {
         <Route element={<AuthLayout/>}>
           <Route path='login' element={<Login/>}/>
           <Route path='register'  element={<Register/>}/>
+          <Route element={<ProtectedRouters/>}>
+            <Route path='boards' element={<Boards/>}/>
+          </Route>
         </Route>
-        <Route element={<ProtectedRouters/>}>
-            <Route path='boards' element={<h1 className='text-white'>Welcome to Boardnest</h1>}/>
-        </Route>
+
       </Routes>
     </AuthProvider>)
 }

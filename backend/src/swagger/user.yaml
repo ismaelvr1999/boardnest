@@ -119,3 +119,23 @@
         $ref: "#/components/responses/BadRequest"
       500:
         $ref: "#/components/responses/InternalServerError"
+
+/api/users/logout:
+  get:
+    summary: Logout user
+    tags:
+      - User
+    responses:
+      200:
+        description: Successfully logout
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      500:
+        $ref: "#/components/responses/InternalServerError"

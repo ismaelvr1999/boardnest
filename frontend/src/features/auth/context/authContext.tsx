@@ -1,7 +1,8 @@
 import { createContext, useState, useContext,useEffect} from "react";
-import Cookies from "js-cookie";
 import axios from "../../../lib/axios";
 import type { AuthContexType, AuthProviderType,User} from "../auth.types";
+import { useNavigate } from "react-router-dom";
+import { logoutUser} from "../auth.api";
 
 const AuthContext = createContext<AuthContexType>(null);
 
@@ -16,14 +17,15 @@ export const AuthProvider:AuthProviderType = ({children})=> {
     const [user,setUser] = useState<User>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading,setLoading] = useState<boolean>(true);
-    const logout = () => {
-        Cookies.remove("auth");
+    const nav = useNavigate();
+    const logout =  async () => {
+        await logoutUser();
         setUser(null);
         setIsAuthenticated(false);
+        nav("/login");
       };
       
       useEffect(()=>{
-
         const verify = async ()=>{
             const result = await axios.get("users/verify");
             setUser(result.data.profile);

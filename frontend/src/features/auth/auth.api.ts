@@ -7,3 +7,7 @@ export const signUp = async (data: FormRegisterValues) => {
 export const signIn = async (data:FormLoginValues)=>{
     return axios.post("users/login",data);
 }
+
+export const logoutUser = async ()=>{
+  axios.get("users/logout");
+}

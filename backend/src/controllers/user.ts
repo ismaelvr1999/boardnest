@@ -39,4 +39,14 @@ export default class usersController {
     }
     res.status(200).json({ok:true,profile})
   }
+
+  async logout(req:Request, res:Response){
+    res.clearCookie("auth",{
+        httpOnly:true,
+        secure: false,
+        sameSite:"lax",
+        path:"/"
+    })
+    res.status(200).json({ok:true})
+  }
 }
