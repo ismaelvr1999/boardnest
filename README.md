@@ -40,6 +40,7 @@ Create a .env file add the following variables:
    DB_USER = 
    DB_PASSWORD = 
    DB_NAME = 
+   FRONTEND_URL = 
 
    PORT = 
    JWT_SECRET = 

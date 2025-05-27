@@ -58,7 +58,7 @@
       200:
         description: Successful login, cookie set
         headers:
-          Set-Cookie:
+          auth:
             description: Authentication cookie
             schema:
               type: string
@@ -69,9 +69,53 @@
               properties:
                 ok:
                   type: boolean
+                profile:
+                  type: object
+                  properties:
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    username:
+                      type: string
+                    email:
+                      type: string
+                      format: email
       400:
         $ref: "#/components/responses/BadRequest"
       401:
         $ref: "#/components/responses/Unauthorized"
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/users/verify:
+  get:
+    summary: Verify auth token
+    tags:
+      - User
+    responses:
+      200:
+        description: Successfully user verification
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                profile:
+                  type: object
+                  properties:
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    username:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+      400:
+        $ref: "#/components/responses/BadRequest"
       500:
         $ref: "#/components/responses/InternalServerError"

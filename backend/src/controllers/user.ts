@@ -30,9 +30,9 @@ export default class usersController {
   }
 
   async verifyToken(req:Request, res:Response){
-    const {userName,firstName,lastName,email} =(req as AuthRequest).user;
+    const {username,firstName,lastName,email} =(req as AuthRequest).user;
     const profile = {
-      userName,
+      username,
       firstName,
       lastName,
       email
