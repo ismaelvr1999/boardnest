@@ -5,7 +5,7 @@ function AuthLayout() {
     <>
       <div className="grid grid-rows-[5rem_1fr] h-screen  text-white px-5 lg:px-28 ">
         <Navbar />
-        <div className="flex items-center justify-center bg-[#1E1E1E]">
+        <div className="flex items-center justify-center">
           <Outlet />
         </div>
       </div>
