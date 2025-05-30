@@ -2,8 +2,9 @@ import BoardCard from "../features/boards/components/boardCard";
 import Header from "../features/boards/components/header";
 import { useBoards } from "../features/boards/boards.hook";
 import Toast from "../components/toast";
+import Modal from "../components/modal";
 export default function Boards() {
-  const {boards} = useBoards();
+  const {boards,handleDelete} = useBoards();
   return (
     <>
       <div className="h-full w-full  pt-7 grid grid-rows-[auto_1fr]">
@@ -16,7 +17,10 @@ export default function Boards() {
             {
               boards && boards.map((board,index)=>{
                 return (
-                  <BoardCard key={index} board={board}/>
+                  <BoardCard 
+                    key={index} 
+                    board={board} 
+                    handleDelete={handleDelete} />
                 );
               })
             }
@@ -24,6 +28,7 @@ export default function Boards() {
         </div>
       </div>
       <Toast/>
+      <Modal/>
     </>
   );
 }

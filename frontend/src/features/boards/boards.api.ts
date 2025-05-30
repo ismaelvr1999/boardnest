@@ -1,7 +1,7 @@
 import axios from "../../lib/axios";
 import type { Board } from "./boards.types";
 
-export const getBoard = async () =>{
+export const getBoards = async () =>{
     return axios.get("boards");
 }
 

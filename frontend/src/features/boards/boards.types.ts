@@ -1,5 +1,5 @@
 export interface Board {
-    id?:string;
+    id:string;
     totalColumns?:number;
     name:string;
     description:string;
@@ -7,7 +7,10 @@ export interface Board {
     updatedAt?:string;
     creationAt?:string;
 }
-
+export interface DeleteBoard {
+    id: string;
+}
 export type CardProps = {
-    board:Board
+    board:Board,
+    handleDelete:(id:string)=>Promise<void>;
 }; 
