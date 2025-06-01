@@ -1,11 +1,11 @@
 import axios from "../../lib/axios";
-import type { Board } from "./boards.types";
+import type {CreateBoardApi} from "./boards.types";
 
 export const getBoards = async () =>{
     return axios.get("boards");
 }
 
-export const creadBoard = async (board:Board) =>{
+export const createBoard = async (board:CreateBoardApi) =>{
     return axios.post("boards",board);
 }
 

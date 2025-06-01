@@ -1,8 +1,10 @@
-const Header = ()=> {
+import type { MouseEventHandler } from "react";
+
+const Header = ({handleOpen}:{handleOpen:MouseEventHandler})=> {
     return (
         <header className="border-b pb-7 flex items-center">
         <h1 className="text-4xl">My Boards</h1>
-        <button className="cursor-pointer ml-auto mr-5 border text-3xl w-10 h-10 rounded-lg text-green-300">
+        <button onClick={handleOpen} className="cursor-pointer ml-auto mr-5 border text-3xl w-10 h-10 rounded-lg text-green-300">
           +
         </button>
         <div className="flex items-center">

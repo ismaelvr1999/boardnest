@@ -1,20 +1,12 @@
-import { useState, type MouseEventHandler } from "react";
+import type{ ModalProps } from "../types/modal.types";
 
-const Modal = () => {
-    const [isHidden,setIsHidden] = useState(false);
-    const handleClose:MouseEventHandler = (e)=>{
-        e.preventDefault();    
-        setIsHidden(true);
-    }
-    const handleOpen:MouseEventHandler = (e)=>{
-        e.preventDefault();
-        setIsHidden(false);
-    }
+const Modal = ({children,handleClose,isHidden}:ModalProps) => {
+
     return (
     <div className={`absolute w-full h-full bg-neutral-500/30 top-0 left-0 justify-center items-center ${isHidden?'hidden':"flex"}` } id="modal-container" onClick={handleClose}>
-      <div  onClick={(e) => e.stopPropagation()} className="relative w-1/2 bg-neutral-800 p-2 rounded-lg" id="content">
+      <div  onClick={(e) => e.stopPropagation()} className="relative w-1/2 bg-neutral-800 py-2 px-4 rounded-lg" id="content">
         <header className="flex justify-end">
-          <button onClick={handleClose} id="close-button">
+          <button onClick={handleClose} id="close-button" className="cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={35}
@@ -28,6 +20,7 @@ const Modal = () => {
             </svg>
           </button>
         </header>
+        {children}
       </div>
     </div>
   );
