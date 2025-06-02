@@ -19,8 +19,11 @@ export default class BoardsController {
     }
 
     async getUserBoards(req:Request, res:Response){
-        const {id} =(req as AuthRequest).user;        
-        const boards = await this.service.getUserBoards(id);        
+        const {id} =(req as AuthRequest).user; 
+        const {search} = matchedData(req);       
+        const boards = search ? 
+        await this.service.getUserBoards(id,search):
+        await this.service.getUserBoards(id);        
         res.status(200).json({ok:true,boards})
     }
     

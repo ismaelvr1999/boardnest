@@ -12,3 +12,7 @@ export const createBoard = async (board:CreateBoardApi) =>{
 export const deleteBoard = async (id:string) =>{
     return axios.delete(`boards/${id}`);
 }
+
+export const searchBoards = async (search:string) =>{
+    return axios.get(`boards?search=${encodeURIComponent(search)}`);
+}

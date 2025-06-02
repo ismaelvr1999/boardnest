@@ -1,6 +1,6 @@
 import { Router } from "express";
 import container from "../config";
-import { body, param } from "express-validator";
+import { body, param,query } from "express-validator";
 import validate from "../middlewares/validate";
 import auth from "../middlewares/authenticate";
 const router = Router();
@@ -9,6 +9,7 @@ const controller = container.resolve("boardsController");
 router.get(
   "/boards/",
   auth,
+  query("search").optional().trim().isString(),
   controller.getUserBoards.bind(controller)
 );
 

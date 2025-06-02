@@ -6,13 +6,13 @@ import Modal from "../components/modal";
 import CreateBoardForm from "../features/boards/components/createBoardForm";
 import useModal from "../hooks/modal.hook";
 export default function Boards() {
-  const {boards,handleDelete,handleSubmit,register,onCreate} = useBoards();
-  const {handleOpen,handleClose,isHidden} = useModal();
+  const {boards,handleDelete,handleSubmit,register,onCreate,search,setSearch} = useBoards();
+  const {handleOpen,handleClose,isHidden} = useModal(); 
   return (
     <>
       <div className="h-full w-full  pt-7 grid grid-rows-[auto_1fr]">
         {/* Add and search */}
-        <Header handleOpen={handleOpen}/>
+        <Header handleOpen={handleOpen} search={search} setSearch={setSearch}/>
         {/* Scroll Container */}
         <div className="pt-7 overflow-scroll">
           {/*Cards Container*/}

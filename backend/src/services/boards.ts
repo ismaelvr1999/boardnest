@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { CreateBoard, UpdateBoard } from "../dto/boards.dto";
 import Board from "../models/board";
 import BoardColumn from "../models/boardColumn";
@@ -10,9 +11,15 @@ export default class BoardsService {
   async createBoard(board: CreateBoard) {
     return await Board.create(board);
   }
-  async getUserBoards(id: string) {
+  async getUserBoards(id: string,search:string ='') {
     const user = await this.usersService.getUser(id);
-    return await user.$get("boards");
+    return await user.$get("boards",{
+      where:{
+        name: {
+          [Op.like]: `%${search}%`
+        }
+      }
+    });
   }
 
   async getBoard(boardId: string, userId: string) {
