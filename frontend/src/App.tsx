@@ -1,24 +1,29 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import AuthLayout from './layout/layout';
+import Layout from './layout/layout';
 import Register from './pages/register';
 import Login from './pages/login';
 import { AuthProvider } from './features/auth/context/authContext';
 import ProtectedRouters from './components/protectedRouters';
 import Boards from './pages/boards';
+import Board from './pages/board';
 function App() {
 
   return (
     <AuthProvider>
       <Routes>
-        <Route element={<AuthLayout/>}>
+        <Route element={<Layout/>}>
+           {/* Auth routers */}
           <Route path='login' element={<Login/>}/>
           <Route path='register'  element={<Register/>}/>
+          {/* ProtectedRouters */}
           <Route element={<ProtectedRouters/>}>
-            <Route path='boards' element={<Boards/>}/>
+            <Route path='boards'> 
+              <Route index element={<Boards/>}/>
+              <Route path=':id' element={<Board />}/>
+            </Route>
           </Route>
         </Route>
-
       </Routes>
     </AuthProvider>)
 }
