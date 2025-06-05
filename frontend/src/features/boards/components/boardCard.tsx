@@ -1,23 +1,25 @@
+import { Link } from "react-router-dom";
 import type { CardProps } from "../boards.types";
 const BoardCard = ({board,handleDelete}:CardProps) => {
   return (
     <div className="border  h-40 p-4 rounded-lg grid grid-rows-[auto_1fr] gap-2 shadow-xl/15 shadow-white">
       <div className="flex">
         <h1 className="text-2xl">{board.name}</h1>
-          <button onClick={()=>handleDelete(board.id)} className="ml-auto mr-4 border rounded-lg p-1 text-red-300 cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={30}
-              height={30}
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg>
-          </button>
-
+          
+            <button onClick={()=>handleDelete(board.id)} className="ml-auto mr-4 border rounded-lg p-1 text-red-300 cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={30}
+                height={30}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+                ></path>
+              </svg>
+            </button>
+        <Link to={board.id}>
         <button className="border rounded-lg p-1 text-blue-300 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +33,7 @@ const BoardCard = ({board,handleDelete}:CardProps) => {
             ></path>
           </svg>
         </button>
+        </Link>
       </div>
       <div className="overflow-scroll text-[#B5B5B5]">
         <p>{board.description}</p>

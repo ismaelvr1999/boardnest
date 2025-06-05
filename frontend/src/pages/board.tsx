@@ -1,10 +1,29 @@
+import { useParams } from "react-router-dom";
 import Column from "../features/board/components/column";
+import { useEffect, useState } from "react";
+import { getBoard } from "../features/board/board.api";
+import { toast } from "react-toastify";
 
 const Board = () => {
+  const { id } = useParams<string>();
+  const [board, setBoard] = useState();
+  useEffect(() => {
+    if (typeof id === "undefined") return;
+    const fetchBoard = async () => {
+      const data = await getBoard(id);
+      setBoard(data);
+    };
+    try{
+      fetchBoard();
+    }catch(error){
+      toast.error((error as Error).message);
+    }
+    
+  }, []);
   return (
-    <div className="h-full w-full  pt-7 grid grid-rows-[auto_1fr] auto-rows-min">
+    <div className="h-full w-full pt-7 grid grid-rows-[auto_1fr]">
       <header className="border-b pb-7 flex items-center">
-        <h1 className="text-4xl font-bold">Board name</h1>
+        <h1 className="text-4xl font-bold">My board</h1>
         <button className="cursor-pointer ml-auto border rounded-lg p-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +42,7 @@ const Board = () => {
         </button>
       </header>
 
-      <div className="flex gap-4 py-4 w-full flex-nowrap overflow-x-scroll">
+      <div className="flex gap-4 py-4 h-full overflow-x-auto">
         <Column />
       </div>
     </div>
