@@ -1,30 +1,28 @@
-import { useParams } from "react-router-dom";
+import useBoard from "../features/board/board.hook";
 import Column from "../features/board/components/column";
-import { useEffect, useState } from "react";
-import { getBoard } from "../features/board/board.api";
-import { toast } from "react-toastify";
+import Modal from "../components/modal";
+import useModal from "../hooks/modal.hook";
+import UpdateBoardForm from "../features/board/components/updateBoardForm";
+import { useForm } from "react-hook-form";
+import type { UpdateBoardApi } from "../features/board/board.types";
 
 const Board = () => {
-  const { id } = useParams<string>();
-  const [board, setBoard] = useState();
-  useEffect(() => {
-    if (typeof id === "undefined") return;
-    const fetchBoard = async () => {
-      const data = await getBoard(id);
-      setBoard(data);
-    };
-    try{
-      fetchBoard();
-    }catch(error){
-      toast.error((error as Error).message);
-    }
-    
-  }, []);
+  const { board, onUpdate } = useBoard();
+  const { isHidden, handleOpen, handleClose } = useModal();
+  const { register, handleSubmit } = useForm<UpdateBoardApi>({
+    defaultValues: {
+      name: board?board.name:"",
+      description: board?board.name:"",
+    },
+  });
   return (
     <div className="h-full w-full pt-7 grid grid-rows-[auto_1fr]">
       <header className="border-b pb-7 flex items-center">
-        <h1 className="text-4xl font-bold">My board</h1>
-        <button className="cursor-pointer ml-auto border rounded-lg p-1">
+        <h1 className="text-4xl font-bold">{board && board.name}</h1>
+        <button
+          className="cursor-pointer ml-auto border rounded-lg p-1 "
+          onClick={handleOpen}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={35}
@@ -41,10 +39,18 @@ const Board = () => {
           </svg>
         </button>
       </header>
-
       <div className="flex gap-4 py-4 h-full overflow-x-auto">
         <Column />
       </div>
+      <Modal isHidden={isHidden} handleClose={handleClose}>
+        <UpdateBoardForm
+          register={register}
+          onUpdate={onUpdate}
+          handleSubmit={handleSubmit}
+          name={board ? board.name : ""}
+          description={board ? board.description : ""}
+        />
+      </Modal>
     </div>
   );
 };
