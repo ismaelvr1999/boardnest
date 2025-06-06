@@ -4,51 +4,101 @@ import Modal from "../components/modal";
 import useModal from "../hooks/modal.hook";
 import UpdateBoardForm from "../features/board/components/updateBoardForm";
 import { useForm } from "react-hook-form";
-import type { UpdateBoardApi } from "../features/board/board.types";
+import type { UpdateBoardApi,AddColumnApi } from "../features/board/board.types";
+import { useEffect } from "react";
+import Header from "../features/board/components/header";
+import Toast from "../components/toast";
 
 const Board = () => {
-  const { board, onUpdate } = useBoard();
-  const { isHidden, handleOpen, handleClose } = useModal();
-  const { register, handleSubmit } = useForm<UpdateBoardApi>({
-    defaultValues: {
-      name: board?board.name:"",
-      description: board?board.name:"",
-    },
-  });
+  const { board, onUpdate,id,onAddColumn } = useBoard();
+  const {
+    isHidden: isHiddenUpdateBoard,
+    handleOpen: handleOpenUpdateBoard,
+    handleClose: handleCloseUpdateBoard,
+  } = useModal();
+  const {
+    isHidden: isHiddenAddBoard,
+    handleOpen: handleOpenAddBoard,
+    handleClose: handleCloseAddBoard,
+  } = useModal();
+  const { register:registerUpdateBoard, reset:resetUpdateBoard, handleSubmit:handleSubmitUpdateBoard} = useForm<UpdateBoardApi>();
+  const { register:registerAddBoard,reset:resetAddColumn, handleSubmit:handleSubmitAddColumn } = useForm<AddColumnApi>();
+
+  useEffect(() => {
+    resetUpdateBoard({
+      name: board ? board.name : "",
+      description: board ? board.description : "",
+    });
+    resetAddColumn({
+      BoardId:id
+    })
+  }, [board]);
+
   return (
     <div className="h-full w-full pt-7 grid grid-rows-[auto_1fr]">
-      <header className="border-b pb-7 flex items-center">
-        <h1 className="text-4xl font-bold">{board && board.name}</h1>
-        <button
-          className="cursor-pointer ml-auto border rounded-lg p-1 "
-          onClick={handleOpen}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={35}
-            height={35}
-            viewBox="0 0 24 24"
+      {/* Title and settings */}
+      <Header
+        handleOpen={handleOpenUpdateBoard}
+        name={board ? board.name : ""}
+      />
+      {/*columns container*/}
+      <div className="flex gap-4 py-4 h-full overflow-x-auto">
+        {board &&
+          board.boardColumns.map((column, key) => {
+            return <Column name={column.name} key={key} />;
+          })}
+        <Modal isHidden={isHiddenAddBoard} handleClose={handleCloseAddBoard}>
+          <form onSubmit={handleSubmitAddColumn(onAddColumn)}>
+            <h1 className="text-3xl font-bold mb-4">Add column</h1>
+            <p className="text-lg">Name</p>
+            <input
+              {...registerAddBoard("name")}
+              type="text"
+              className="block border border-white w-full  text-sm text-[#B5B5B5] p-4 rounded-lg my-2"
+              placeholder="Enter board name"
+            />
+
+            <input
+              {...registerAddBoard("BoardId")}
+              type="hidden"
+            />
+            <button className="p-2 bg-green-500  text-lg my-2 text-center rounded-lg cursor-pointer ">
+              Add
+            </button>
+            <Toast />
+          </form>
+          
+        </Modal>
+
+        <div className="flex justify-between h-fit w-90 border rounded-xl p-4 shrink-0">
+          <h1 className="text-2xl h-fit">Add column</h1>
+          <button
+            className="text-2xl cursor-pointer"
+            onClick={handleOpenAddBoard}
           >
-            <g fill="none" fillRule="evenodd">
-              <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"></path>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={30}
+              height={30}
+              viewBox="0 0 24 24"
+            >
               <path
                 fill="currentColor"
-                d="M18 4a1 1 0 1 0-2 0v1H4a1 1 0 0 0 0 2h12v1a1 1 0 1 0 2 0V7h2a1 1 0 1 0 0-2h-2zM4 11a1 1 0 1 0 0 2h2v1a1 1 0 1 0 2 0v-1h12a1 1 0 1 0 0-2H8v-1a1 1 0 0 0-2 0v1zm-1 7a1 1 0 0 1 1-1h12v-1a1 1 0 1 1 2 0v1h2a1 1 0 1 1 0 2h-2v1a1 1 0 1 1-2 0v-1H4a1 1 0 0 1-1-1"
+                d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"
               ></path>
-            </g>
-          </svg>
-        </button>
-      </header>
-      <div className="flex gap-4 py-4 h-full overflow-x-auto">
-        <Column />
+            </svg>
+          </button>
+        </div>
       </div>
-      <Modal isHidden={isHidden} handleClose={handleClose}>
+      {/*update name or description form*/}
+      <Modal
+        isHidden={isHiddenUpdateBoard}
+        handleClose={handleCloseUpdateBoard}
+      >
         <UpdateBoardForm
-          register={register}
+          register={registerUpdateBoard}
           onUpdate={onUpdate}
-          handleSubmit={handleSubmit}
-          name={board ? board.name : ""}
-          description={board ? board.description : ""}
+          handleSubmit={handleSubmitUpdateBoard}
         />
       </Modal>
     </div>

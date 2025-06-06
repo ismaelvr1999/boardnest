@@ -35,8 +35,13 @@ export interface UpdateBoardApi {
     description: string;
 }
 
-export interface UpdateBoardFormProps extends UpdateBoardApi {
+export interface UpdateBoardFormProps {
     onUpdate: SubmitHandler<UpdateBoardApi>;
     handleSubmit: UseFormHandleSubmit<UpdateBoardApi>;
     register:UseFormRegister<UpdateBoardApi>;
+}
+
+export interface AddColumnApi {
+    name: string;
+    BoardId: string;
 }

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getBoard, updateBoard } from "./board.api";
+import { addColumn, getBoard, updateBoard } from "./board.api";
 import { toast } from "react-toastify";
-import type { BoardWithColumns } from "./board.types";
+import type { AddColumnApi, BoardWithColumns } from "./board.types";
 import { useParams } from "react-router-dom";
 import type { SubmitHandler } from "react-hook-form";
 import type { UpdateBoardApi } from "./board.types";
+import axios from "../../lib/axios";
 const useBoard = () =>{
     const { id } = useParams<string>();
     const [board, setBoard] = useState<BoardWithColumns>();
@@ -32,6 +33,18 @@ const useBoard = () =>{
             console.log((error as Error).message);
         }
     }
-    return {board,onUpdate};
+
+    const onAddColumn: SubmitHandler<AddColumnApi> = async (d)=>{
+      try {
+        if(typeof id === "undefined") return ;
+        await addColumn(d);
+        toast.success("column added");
+        const data = await getBoard(id);
+        setBoard(data);
+      } catch (error) {
+        console.log((error as Error).message)
+      }
+    }
+    return {board,onUpdate,id,onAddColumn};
 }
 export default useBoard;
