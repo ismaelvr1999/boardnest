@@ -45,3 +45,9 @@ export interface AddColumnApi {
     name: string;
     BoardId: string;
 }
+
+export interface AddColumnFormProps {
+    onAddColumn: SubmitHandler<AddColumnApi>;
+    handleSubmit: UseFormHandleSubmit<AddColumnApi>;
+    register:UseFormRegister<AddColumnApi>;
+}
