@@ -1,9 +1,42 @@
-const Task = ()=> {
-    return(
-        <div className="w-full h-fit border rounded-xl p-2 my-3">
-        <p className="text-xl mb-2">Task name </p>
+import { useForm } from "react-hook-form";
+import Modal from "../../../components/modal";
+import useModal from "../../../hooks/modal.hook";
+import type { TaskProps, UpdateTaskFormApi } from "../board.types";
+import UpdateTaskForm from "./updateTaskForm";
+import { useEffect } from "react";
+
+const Task = ({ name, id, onDeleteTask, onUpdateTask }: TaskProps) => {
+  const {
+    register: registerUpdateTask,
+    handleSubmit: handleSubmitTask,
+    reset: resetUpdateTask,
+  } = useForm<UpdateTaskFormApi>({
+    defaultValues: {
+      name: name,
+      id: id,
+    },
+  });
+
+  useEffect(() => {
+    resetUpdateTask({
+      name: name,
+      id: id,
+    });
+  }, [name]);
+  const {
+    isHidden: isHiddenUpdateTask,
+    handleOpen: handleOpenUpdateTask,
+    handleClose: handleCloseUpdateTask,
+  } = useModal();
+  return (
+    <>
+      <div className="w-full h-fit border rounded-xl p-2 my-3">
+        <p className="text-xl mb-2">{name}</p>
         <div className="flex justify-between">
-          <button className="text-red-300 cursor-pointer">
+          <button
+            className="text-red-300 cursor-pointer"
+            onClick={() => onDeleteTask(id)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={30}
@@ -16,7 +49,10 @@ const Task = ()=> {
               ></path>
             </svg>
           </button>
-          <button className="text-blue-300 cursor-pointer">
+          <button
+            className="text-blue-300 cursor-pointer"
+            onClick={handleOpenUpdateTask}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={30}
@@ -31,6 +67,14 @@ const Task = ()=> {
           </button>
         </div>
       </div>
-    )
-}
+      <Modal isHidden={isHiddenUpdateTask} handleClose={handleCloseUpdateTask}>
+        <UpdateTaskForm
+          register={registerUpdateTask}
+          handleSubmit={handleSubmitTask}
+          onUpdate={onUpdateTask}
+        />
+      </Modal>
+    </>
+  );
+};
 export default Task;

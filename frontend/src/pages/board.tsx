@@ -15,8 +15,17 @@ import AddColumnButton from "../features/board/components/addColumnButton";
 import Toast from "../components/toast";
 
 const Board = () => {
-  const { board, onUpdate, id, onAddColumn, onDeleteColumn, updateColumnName } =
-    useBoard();
+  const {
+    board,
+    onUpdate,
+    id,
+    onAddColumn,
+    onDeleteColumn,
+    updateColumnName,
+    onAddTask,
+    onDeleteTask,
+    onUpdateTaskName,
+  } = useBoard();
   const {
     isHidden: isHiddenUpdateBoard,
     handleOpen: handleOpenUpdateBoard,
@@ -64,8 +73,13 @@ const Board = () => {
               <Column
                 id={column.id}
                 onDeleteColumn={onDeleteColumn}
+                onAddTask={onAddTask}
+                onDeleteTask={onDeleteTask}
+                onUpdateTask={onUpdateTaskName}
+                boardId={column.BoardId}
                 name={column.name}
                 key={key}
+                tasks={column.tasks}
                 onUpdateColumn={updateColumnName}
               />
             );

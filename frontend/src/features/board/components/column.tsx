@@ -1,15 +1,29 @@
 import Task from "./task";
-import type { ColumnProps } from "../board.types";
+import type { AddTaskFormApi, ColumnProps } from "../board.types";
 import { useForm } from "react-hook-form";
 import type { UpdateColumnNameApi } from "../board.types";
 import useModal from "../../../hooks/modal.hook";
 import Modal from "../../../components/modal";
 import UpdateColumnForm from "./updateColumnForm";
+import AddTaskButton from "./addTaskButton";
+import AddTaskForm from "./addTaskForm";
+import { useEffect } from "react";
 
-const Column = ({ name, id, onDeleteColumn, onUpdateColumn }: ColumnProps) => {
+const Column = ({
+  name,
+  id,
+  tasks,
+  boardId,
+  onDeleteColumn,
+  onUpdateColumn,
+  onAddTask,
+  onDeleteTask,
+  onUpdateTask,
+}: ColumnProps) => {
   const {
     register: registerUpdateColumn,
-    handleSubmit: handleSubmitUpdateColumn
+    handleSubmit: handleSubmitUpdateColumn,
+    reset: resetUpdateColumn,
   } = useForm<UpdateColumnNameApi>({
     defaultValues: {
       name: name,
@@ -17,16 +31,37 @@ const Column = ({ name, id, onDeleteColumn, onUpdateColumn }: ColumnProps) => {
     },
   });
 
+  const { register: registerAddTask, handleSubmit: handleSubmitAddTask } =
+    useForm<AddTaskFormApi>({
+      defaultValues: {
+        ColumnId: id,
+        BoardId: boardId,
+      },
+    });
+
+  useEffect(() => {
+    resetUpdateColumn({
+      name: name,
+      id: id,
+    });
+  }, [name]);
+
   const {
     isHidden: isHiddenUpdateColumn,
     handleOpen: handleOpenUpdateColumn,
     handleClose: handleCloseUpdateColumn,
   } = useModal();
 
+  const {
+    isHidden: isHiddenAddTask,
+    handleOpen: handleOpenAddTask,
+    handleClose: handleCloseAddTask,
+  } = useModal();
   return (
     <>
       <div className="flex flex-col h-full w-90 border rounded-xl p-4 shrink-0 shadow-xl/15 shadow-white">
         <div className="flex">
+          {/* Delete and Update column*/}
           <h1 className="text-2xl font-bold h-fit">{name}</h1>
           <button
             className="text-red-300 cursor-pointer ml-auto"
@@ -61,10 +96,23 @@ const Column = ({ name, id, onDeleteColumn, onUpdateColumn }: ColumnProps) => {
             </svg>
           </button>
         </div>
+        {/* Tasks */}
         <div className="overflow-y-auto">
-          <Task />
+          {tasks.map((task, key) => {
+            return (
+              <Task
+                key={key}
+                id={task.id}
+                name={task.name}
+                onDeleteTask={onDeleteTask}
+                onUpdateTask={onUpdateTask}
+              />
+            );
+          })}
         </div>
+        <AddTaskButton handleOpenModal={handleOpenAddTask} />
       </div>
+      {/* Update Column Modal */}
       <Modal
         handleClose={handleCloseUpdateColumn}
         isHidden={isHiddenUpdateColumn}
@@ -73,6 +121,14 @@ const Column = ({ name, id, onDeleteColumn, onUpdateColumn }: ColumnProps) => {
           handleSubmit={handleSubmitUpdateColumn}
           onUpdate={onUpdateColumn}
           register={registerUpdateColumn}
+        />
+      </Modal>
+      {/* Add task Modal */}
+      <Modal handleClose={handleCloseAddTask} isHidden={isHiddenAddTask}>
+        <AddTaskForm
+          onAddTask={onAddTask}
+          register={registerAddTask}
+          handleSubmit={handleSubmitAddTask}
         />
       </Modal>
     </>
