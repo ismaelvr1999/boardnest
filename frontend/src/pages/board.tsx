@@ -12,9 +12,11 @@ import { useEffect } from "react";
 import Header from "../features/board/components/header";
 import AddColumnForm from "../features/board/components/addColumnForm";
 import AddColumnButton from "../features/board/components/addColumnButton";
+import Toast from "../components/toast";
 
 const Board = () => {
-  const { board, onUpdate, id, onAddColumn } = useBoard();
+  const { board, onUpdate, id, onAddColumn, onDeleteColumn, updateColumnName } =
+    useBoard();
   const {
     isHidden: isHiddenUpdateBoard,
     handleOpen: handleOpenUpdateBoard,
@@ -25,6 +27,7 @@ const Board = () => {
     handleOpen: handleOpenAddBoard,
     handleClose: handleCloseAddBoard,
   } = useModal();
+
   const {
     register: registerUpdateBoard,
     reset: resetUpdateBoard,
@@ -57,7 +60,15 @@ const Board = () => {
       <div className="flex gap-4 py-4 h-full overflow-x-auto">
         {board &&
           board.boardColumns.map((column, key) => {
-            return <Column name={column.name} key={key} />;
+            return (
+              <Column
+                id={column.id}
+                onDeleteColumn={onDeleteColumn}
+                name={column.name}
+                key={key}
+                onUpdateColumn={updateColumnName}
+              />
+            );
           })}
         <AddColumnButton handleOpenModal={handleOpenAddBoard} />
       </div>
@@ -80,6 +91,7 @@ const Board = () => {
           register={registerAddBoard}
         />
       </Modal>
+      <Toast />
     </div>
   );
 };

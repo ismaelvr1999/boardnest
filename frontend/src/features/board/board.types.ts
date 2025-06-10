@@ -51,3 +51,21 @@ export interface AddColumnFormProps {
     handleSubmit: UseFormHandleSubmit<AddColumnApi>;
     register:UseFormRegister<AddColumnApi>;
 }
+
+export interface ColumnProps {
+    name: string;
+    id: string;
+    onDeleteColumn: (columnId:string) => Promise<void>;
+    onUpdateColumn: SubmitHandler<UpdateColumnNameApi>;
+}
+
+export interface UpdateColumnNameApi {
+    name: string;
+    id: string;
+}
+
+export interface UpdateColumnFormProps {
+    onUpdate: SubmitHandler<UpdateColumnNameApi>;
+    handleSubmit: UseFormHandleSubmit<UpdateColumnNameApi>;
+    register:UseFormRegister<UpdateColumnNameApi>;
+}

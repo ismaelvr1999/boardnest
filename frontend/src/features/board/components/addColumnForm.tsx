@@ -1,4 +1,3 @@
-import Toast from "../../../components/toast";
 import type { AddColumnFormProps } from "../board.types";
 const AddColumnForm = ({
   handleSubmit,
@@ -20,7 +19,6 @@ const AddColumnForm = ({
       <button className="p-2 bg-green-500  text-lg my-2 text-center rounded-lg cursor-pointer ">
         Add
       </button>
-      <Toast />
     </form>
   );
 };

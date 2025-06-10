@@ -1,6 +1,6 @@
-import type { UpdateBoardFormProps } from "../board.types";
+import type { UpdateColumnFormProps } from "../board.types";
 
-const UpdateBoardForm = ({handleSubmit,onUpdate,register}:UpdateBoardFormProps) => {
+const UpdateColumnForm = ({handleSubmit,onUpdate,register}:UpdateColumnFormProps) => {
     return (
     <form onSubmit={handleSubmit(onUpdate)}>
       <h1 className="text-3xl font-bold mb-4">Update board</h1>
@@ -11,12 +11,9 @@ const UpdateBoardForm = ({handleSubmit,onUpdate,register}:UpdateBoardFormProps) 
         className="block border border-white w-full  text-sm text-[#B5B5B5] p-4 rounded-lg my-2"
         placeholder="Enter board name"
       />
-      <p className="text-lg">Description</p>
       <input
-        {...register("description")}
-        type="text"
-        className="block border border-white w-full text-sm text-[#B5B5B5] p-4 rounded-lg my-2"
-        placeholder="Enter board description"
+        {...register("id")}
+        type="hidden"
       />
       <button className="p-2 bg-green-500  text-lg my-2 text-center rounded-lg cursor-pointer ">
         Update
@@ -25,4 +22,4 @@ const UpdateBoardForm = ({handleSubmit,onUpdate,register}:UpdateBoardFormProps) 
   );
 };
 
-export default UpdateBoardForm;
+export default UpdateColumnForm;

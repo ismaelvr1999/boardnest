@@ -5,7 +5,7 @@ const AddColumnButton = ({
   handleOpenModal: MouseEventHandler;
 }) => {
   return (
-    <div className="flex justify-between h-fit w-90 border rounded-xl p-4 shrink-0">
+    <div className="flex justify-between h-fit w-90 border rounded-xl p-4 shrink-0 shadow-xl/15 shadow-white">
       <h1 className="text-2xl h-fit">Add column</h1>
       <button className="text-2xl cursor-pointer" onClick={handleOpenModal}>
         <svg

@@ -15,3 +15,13 @@ export const addColumn = async(data:AddColumnApi)=>{
     const resp = await axios.post<{ok:boolean}>(`columns/`,data);
     return resp.data.ok;
 }
+
+export const deleteColumn = async(id:string)=>{
+    const resp = await axios.delete<{ok:boolean}>(`columns/${id}`);
+    return resp.data.ok;
+}
+
+export const updateColumn = async(id:string,name:string)=>{
+    const resp = await axios.patch<{ok:boolean}>(`columns/${id}/name`,{name});
+    return resp.data.ok;
+}
