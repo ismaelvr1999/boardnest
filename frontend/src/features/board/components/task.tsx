@@ -4,25 +4,26 @@ import useModal from "../../../hooks/modal.hook";
 import type { TaskProps, UpdateTaskFormApi } from "../board.types";
 import UpdateTaskForm from "./updateTaskForm";
 import { useEffect } from "react";
-
-const Task = ({ name, id, onDeleteTask, onUpdateTask }: TaskProps) => {
+import useTask from "../task.hook";
+const Task = ({ task }: TaskProps) => {
+  const {onDeleteTask,onUpdateTaskName} =useTask()
   const {
     register: registerUpdateTask,
     handleSubmit: handleSubmitTask,
     reset: resetUpdateTask,
   } = useForm<UpdateTaskFormApi>({
     defaultValues: {
-      name: name,
-      id: id,
+      name: task.name,
+      id: task.id,
     },
   });
 
   useEffect(() => {
     resetUpdateTask({
-      name: name,
-      id: id,
+      name: task.name,
+      id: task.id,
     });
-  }, [name]);
+  }, [task]);
   const {
     isHidden: isHiddenUpdateTask,
     handleOpen: handleOpenUpdateTask,
@@ -31,11 +32,11 @@ const Task = ({ name, id, onDeleteTask, onUpdateTask }: TaskProps) => {
   return (
     <>
       <div className="w-full h-fit border rounded-xl p-2 my-3">
-        <p className="text-xl mb-2">{name}</p>
+        <p className="text-xl mb-2">{task.name}</p>
         <div className="flex justify-between">
           <button
             className="text-red-300 cursor-pointer"
-            onClick={() => onDeleteTask(id)}
+            onClick={() => onDeleteTask(task.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +72,7 @@ const Task = ({ name, id, onDeleteTask, onUpdateTask }: TaskProps) => {
         <UpdateTaskForm
           register={registerUpdateTask}
           handleSubmit={handleSubmitTask}
-          onUpdate={onUpdateTask}
+          onUpdate={onUpdateTaskName}
         />
       </Modal>
     </>

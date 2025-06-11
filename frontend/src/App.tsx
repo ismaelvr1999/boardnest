@@ -7,6 +7,7 @@ import { AuthProvider } from './features/auth/context/authContext';
 import ProtectedRouters from './components/protectedRouters';
 import Boards from './pages/boards';
 import Board from './pages/board';
+import { BoardProvider } from './features/board/boardContext';
 function App() {
 
   return (
@@ -20,7 +21,9 @@ function App() {
           <Route element={<ProtectedRouters/>}>
             <Route path='boards'> 
               <Route index element={<Boards/>}/>
-              <Route path=':id' element={<Board />}/>
+              <Route element={<BoardProvider/>}>
+                <Route path=':id' element={<Board />}/>
+              </Route >
             </Route>
           </Route>
         </Route>

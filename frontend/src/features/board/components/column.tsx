@@ -8,43 +8,37 @@ import UpdateColumnForm from "./updateColumnForm";
 import AddTaskButton from "./addTaskButton";
 import AddTaskForm from "./addTaskForm";
 import { useEffect } from "react";
+import useColumn from "../column.hook";
 
 const Column = ({
-  name,
-  id,
-  tasks,
-  boardId,
-  onDeleteColumn,
-  onUpdateColumn,
-  onAddTask,
-  onDeleteTask,
-  onUpdateTask,
+  column
 }: ColumnProps) => {
+  const {onDeleteColumn,onUpdateColumnName, onAddTask} = useColumn();
   const {
     register: registerUpdateColumn,
     handleSubmit: handleSubmitUpdateColumn,
     reset: resetUpdateColumn,
   } = useForm<UpdateColumnNameApi>({
     defaultValues: {
-      name: name,
-      id: id,
+      name: column.name,
+      id: column.id,
     },
   });
 
   const { register: registerAddTask, handleSubmit: handleSubmitAddTask } =
     useForm<AddTaskFormApi>({
       defaultValues: {
-        ColumnId: id,
-        BoardId: boardId,
+        ColumnId: column.id,
+        BoardId: column.BoardId,
       },
     });
 
   useEffect(() => {
     resetUpdateColumn({
-      name: name,
-      id: id,
+      name: column.name,
+      id: column.id,
     });
-  }, [name]);
+  }, [column]);
 
   const {
     isHidden: isHiddenUpdateColumn,
@@ -62,10 +56,10 @@ const Column = ({
       <div className="flex flex-col h-full w-90 border rounded-xl p-4 shrink-0 shadow-xl/15 shadow-white">
         <div className="flex">
           {/* Delete and Update column*/}
-          <h1 className="text-2xl font-bold h-fit">{name}</h1>
+          <h1 className="text-2xl font-bold h-fit">{column.name}</h1>
           <button
             className="text-red-300 cursor-pointer ml-auto"
-            onClick={() => onDeleteColumn(id)}
+            onClick={() => onDeleteColumn(column.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -98,14 +92,11 @@ const Column = ({
         </div>
         {/* Tasks */}
         <div className="overflow-y-auto">
-          {tasks.map((task, key) => {
+          {column.tasks.map((task, key) => {
             return (
               <Task
                 key={key}
-                id={task.id}
-                name={task.name}
-                onDeleteTask={onDeleteTask}
-                onUpdateTask={onUpdateTask}
+                task={task}
               />
             );
           })}
@@ -119,7 +110,7 @@ const Column = ({
       >
         <UpdateColumnForm
           handleSubmit={handleSubmitUpdateColumn}
-          onUpdate={onUpdateColumn}
+          onUpdate={onUpdateColumnName}
           register={registerUpdateColumn}
         />
       </Modal>

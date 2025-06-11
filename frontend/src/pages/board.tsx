@@ -18,13 +18,7 @@ const Board = () => {
   const {
     board,
     onUpdate,
-    id,
     onAddColumn,
-    onDeleteColumn,
-    updateColumnName,
-    onAddTask,
-    onDeleteTask,
-    onUpdateTaskName,
   } = useBoard();
   const {
     isHidden: isHiddenUpdateBoard,
@@ -54,7 +48,7 @@ const Board = () => {
       description: board ? board.description : "",
     });
     resetAddColumn({
-      BoardId: id,
+      BoardId: board? board.id:"",
     });
   }, [board]);
 
@@ -71,16 +65,8 @@ const Board = () => {
           board.boardColumns.map((column, key) => {
             return (
               <Column
-                id={column.id}
-                onDeleteColumn={onDeleteColumn}
-                onAddTask={onAddTask}
-                onDeleteTask={onDeleteTask}
-                onUpdateTask={onUpdateTaskName}
-                boardId={column.BoardId}
-                name={column.name}
+                column={column}
                 key={key}
-                tasks={column.tasks}
-                onUpdateColumn={updateColumnName}
               />
             );
           })}

@@ -4,6 +4,7 @@ import type {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
+import type {JSX} from "react";
 
 export interface BoardWithColumns extends Board {
   boardColumns: Column[];
@@ -57,15 +58,7 @@ export interface AddColumnFormProps {
 }
 
 export interface ColumnProps {
-  name: string;
-  id: string;
-  boardId: string;
-  tasks: Task[];
-  onAddTask: SubmitHandler<AddTaskFormApi>;
-  onDeleteColumn: (columnId: string) => Promise<void>;
-  onDeleteTask: (taskId: string) => Promise<void>;
-  onUpdateColumn: SubmitHandler<UpdateColumnNameApi>;
-  onUpdateTask: SubmitHandler<UpdateTaskFormApi>;
+  column: Column;
 }
 
 export interface UpdateColumnNameApi {
@@ -92,10 +85,7 @@ export interface AddTaskFormProps {
 }
 
 export interface TaskProps {
-  id: string;
-  name: string;
-  onDeleteTask: (taskId: string) => Promise<void>;
-  onUpdateTask: SubmitHandler<UpdateTaskFormApi>;
+  task:Task;
 }
 
 export interface UpdateTaskFormApi {
@@ -108,3 +98,11 @@ export interface UpdateTaskFormProps {
   handleSubmit: UseFormHandleSubmit<UpdateTaskFormApi>;
   register: UseFormRegister<UpdateTaskFormApi>;
 }
+export type BoardContexType = {
+  reloadBoard: ()=> Promise<void>;
+  board: BoardWithColumns | undefined;
+  boardId:string | undefined;
+} | null; 
+
+
+export type BoardProviderType = () => JSX.Element;
