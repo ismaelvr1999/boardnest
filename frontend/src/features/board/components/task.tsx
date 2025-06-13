@@ -1,29 +1,10 @@
-import { useForm } from "react-hook-form";
 import Modal from "../../../components/modal";
 import useModal from "../../../hooks/modal.hook";
-import type { TaskProps, UpdateTaskFormApi } from "../board.types";
+import type { ITask } from "../board.types";
 import UpdateTaskForm from "./updateTaskForm";
-import { useEffect } from "react";
-import useTask from "../task.hook";
-const Task = ({ task }: TaskProps) => {
-  const {onDeleteTask,onUpdateTaskName} =useTask()
-  const {
-    register: registerUpdateTask,
-    handleSubmit: handleSubmitTask,
-    reset: resetUpdateTask,
-  } = useForm<UpdateTaskFormApi>({
-    defaultValues: {
-      name: task.name,
-      id: task.id,
-    },
-  });
-
-  useEffect(() => {
-    resetUpdateTask({
-      name: task.name,
-      id: task.id,
-    });
-  }, [task]);
+import useTask from "../hooks/task.hook";
+const Task = ({ task }: {task:ITask}) => {
+  const {onDeleteTask} =useTask()
   const {
     isHidden: isHiddenUpdateTask,
     handleOpen: handleOpenUpdateTask,
@@ -70,9 +51,7 @@ const Task = ({ task }: TaskProps) => {
       </div>
       <Modal isHidden={isHiddenUpdateTask} handleClose={handleCloseUpdateTask}>
         <UpdateTaskForm
-          register={registerUpdateTask}
-          handleSubmit={handleSubmitTask}
-          onUpdate={onUpdateTaskName}
+          task={task}
         />
       </Modal>
     </>

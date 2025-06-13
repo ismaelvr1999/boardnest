@@ -1,12 +1,9 @@
-import type { UpdateTaskFormProps } from "../board.types";
-
-const UpdateTaskForm = ({
-  handleSubmit,
-  onUpdate,
-  register,
-}: UpdateTaskFormProps) => {
+import type { ITask } from "../board.types";
+import useUpdateTask from "../hooks/updateTask.hook";
+const UpdateTaskForm = ({ task }: { task: ITask }) => {
+  const { onUpdateTaskName, handleSubmit, register } = useUpdateTask(task);
   return (
-    <form onSubmit={handleSubmit(onUpdate)}>
+    <form onSubmit={handleSubmit(onUpdateTaskName)}>
       <h1 className="text-3xl font-bold mb-4">Update task</h1>
       <p className="text-lg">Name</p>
       <input

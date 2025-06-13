@@ -1,9 +1,7 @@
-import type { AddTaskFormProps } from "../board.types";
-const AddTaskForm = ({
-  handleSubmit,
-  onAddTask,
-  register,
-}: AddTaskFormProps) => {
+import useAddTaskForm from "../hooks/addTaskForm.hook";
+import type { IColumn } from "../board.types";
+const AddTaskForm = ({column}:{column:IColumn}) => {
+  const {handleSubmit,onAddTask,register} = useAddTaskForm(column);
   return (
     <form onSubmit={handleSubmit(onAddTask)}>
       <h1 className="text-3xl font-bold mb-4">Add Task</h1>
@@ -12,7 +10,7 @@ const AddTaskForm = ({
         {...register("name")}
         type="text"
         className="block border border-white w-full  text-sm text-[#B5B5B5] p-4 rounded-lg my-2"
-        placeholder="Enter board name"
+        placeholder="Enter task name"
       />
 
       <input {...register("BoardId")} type="hidden" />

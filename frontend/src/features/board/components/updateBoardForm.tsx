@@ -1,6 +1,7 @@
-import type { UpdateBoardFormProps } from "../board.types";
+import useUpdateBoardForm from "../hooks/updateBoardForm.hook";
 
-const UpdateBoardForm = ({handleSubmit,onUpdate,register}:UpdateBoardFormProps) => {
+const UpdateBoardForm = () => {
+  const {handleSubmit, onUpdate, register} = useUpdateBoardForm();
     return (
     <form onSubmit={handleSubmit(onUpdate)}>
       <h1 className="text-3xl font-bold mb-4">Update board</h1>

@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
-import { UseBoardContext } from "./boardContext";
-import { deleteColumn,updateColumn,addTask } from "./board.api";
+import { UseBoardContext } from "../boardContext";
+import { deleteColumn,addTask } from "../board.api";
 import type { SubmitHandler } from "react-hook-form";
-import type { UpdateColumnNameApi,AddTaskFormApi } from "./board.types";
+import type {AddTaskFormApi } from "../board.types";
 const useColumn = ()=> {
     const {reloadBoard} = UseBoardContext();
 
@@ -15,15 +15,7 @@ const useColumn = ()=> {
           toast.error((error as Error).message);
         }
       };
-      const onUpdateColumnName: SubmitHandler<UpdateColumnNameApi> = async (d) => {
-        try {
-          await updateColumn(d.id, d.name);
-          await reloadBoard();
-          toast.success("column name updated");
-        } catch (error) {
-          toast.error((error as Error).message);
-        }
-      };
+
       const onAddTask: SubmitHandler<AddTaskFormApi> = async (d) => {
         try {
           await addTask(d);
@@ -34,6 +26,6 @@ const useColumn = ()=> {
         }
       };
 
-      return {onDeleteColumn,onUpdateColumnName,onAddTask};    
+      return {onDeleteColumn,onAddTask};    
 };
 export default useColumn;

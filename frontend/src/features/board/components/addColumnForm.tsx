@@ -1,9 +1,6 @@
-import type { AddColumnFormProps } from "../board.types";
-const AddColumnForm = ({
-  handleSubmit,
-  onAddColumn,
-  register
-}: AddColumnFormProps) => {
+import useAddColumnForm from "../hooks/addColumnForm.hook";
+const AddColumnForm = () => {
+  const { handleSubmit, onAddColumn, register } = useAddColumnForm();
   return (
     <form onSubmit={handleSubmit(onAddColumn)}>
       <h1 className="text-3xl font-bold mb-4">Add column</h1>

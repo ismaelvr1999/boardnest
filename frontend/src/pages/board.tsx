@@ -1,25 +1,15 @@
-import useBoard from "../features/board/board.hook";
 import Column from "../features/board/components/column";
 import Modal from "../components/modal";
 import useModal from "../hooks/modal.hook";
 import UpdateBoardForm from "../features/board/components/updateBoardForm";
-import { useForm } from "react-hook-form";
-import type {
-  UpdateBoardApi,
-  AddColumnApi,
-} from "../features/board/board.types";
-import { useEffect } from "react";
 import Header from "../features/board/components/header";
 import AddColumnForm from "../features/board/components/addColumnForm";
 import AddColumnButton from "../features/board/components/addColumnButton";
 import Toast from "../components/toast";
+import { UseBoardContext } from "../features/board/boardContext";
 
 const Board = () => {
-  const {
-    board,
-    onUpdate,
-    onAddColumn,
-  } = useBoard();
+  const {board} = UseBoardContext();
   const {
     isHidden: isHiddenUpdateBoard,
     handleOpen: handleOpenUpdateBoard,
@@ -30,27 +20,6 @@ const Board = () => {
     handleOpen: handleOpenAddBoard,
     handleClose: handleCloseAddBoard,
   } = useModal();
-
-  const {
-    register: registerUpdateBoard,
-    reset: resetUpdateBoard,
-    handleSubmit: handleSubmitUpdateBoard,
-  } = useForm<UpdateBoardApi>();
-  const {
-    register: registerAddBoard,
-    reset: resetAddColumn,
-    handleSubmit: handleSubmitAddColumn,
-  } = useForm<AddColumnApi>();
-
-  useEffect(() => {
-    resetUpdateBoard({
-      name: board ? board.name : "",
-      description: board ? board.description : "",
-    });
-    resetAddColumn({
-      BoardId: board? board.id:"",
-    });
-  }, [board]);
 
   return (
     <div className="h-full w-full pt-7 grid grid-rows-[auto_1fr]">
@@ -63,12 +32,7 @@ const Board = () => {
       <div className="flex gap-4 py-4 h-full overflow-x-auto">
         {board &&
           board.boardColumns.map((column, key) => {
-            return (
-              <Column
-                column={column}
-                key={key}
-              />
-            );
+            return <Column column={column} key={key} />;
           })}
         <AddColumnButton handleOpenModal={handleOpenAddBoard} />
       </div>
@@ -77,19 +41,11 @@ const Board = () => {
         isHidden={isHiddenUpdateBoard}
         handleClose={handleCloseUpdateBoard}
       >
-        <UpdateBoardForm
-          register={registerUpdateBoard}
-          onUpdate={onUpdate}
-          handleSubmit={handleSubmitUpdateBoard}
-        />
+        <UpdateBoardForm />
       </Modal>
       {/*add column form*/}
       <Modal isHidden={isHiddenAddBoard} handleClose={handleCloseAddBoard}>
-        <AddColumnForm
-          handleSubmit={handleSubmitAddColumn}
-          onAddColumn={onAddColumn}
-          register={registerAddBoard}
-        />
+        <AddColumnForm />
       </Modal>
       <Toast />
     </div>

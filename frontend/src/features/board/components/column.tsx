@@ -1,45 +1,14 @@
 import Task from "./task";
-import type { AddTaskFormApi, ColumnProps } from "../board.types";
-import { useForm } from "react-hook-form";
-import type { UpdateColumnNameApi } from "../board.types";
 import useModal from "../../../hooks/modal.hook";
 import Modal from "../../../components/modal";
 import UpdateColumnForm from "./updateColumnForm";
 import AddTaskButton from "./addTaskButton";
 import AddTaskForm from "./addTaskForm";
-import { useEffect } from "react";
-import useColumn from "../column.hook";
+import useColumn from "../hooks/column.hook";
+import type { IColumn } from "../board.types";
 
-const Column = ({
-  column
-}: ColumnProps) => {
-  const {onDeleteColumn,onUpdateColumnName, onAddTask} = useColumn();
-  const {
-    register: registerUpdateColumn,
-    handleSubmit: handleSubmitUpdateColumn,
-    reset: resetUpdateColumn,
-  } = useForm<UpdateColumnNameApi>({
-    defaultValues: {
-      name: column.name,
-      id: column.id,
-    },
-  });
-
-  const { register: registerAddTask, handleSubmit: handleSubmitAddTask } =
-    useForm<AddTaskFormApi>({
-      defaultValues: {
-        ColumnId: column.id,
-        BoardId: column.BoardId,
-      },
-    });
-
-  useEffect(() => {
-    resetUpdateColumn({
-      name: column.name,
-      id: column.id,
-    });
-  }, [column]);
-
+const Column = ({ column }: { column: IColumn }) => {
+  const { onDeleteColumn } = useColumn();
   const {
     isHidden: isHiddenUpdateColumn,
     handleOpen: handleOpenUpdateColumn,
@@ -93,12 +62,7 @@ const Column = ({
         {/* Tasks */}
         <div className="overflow-y-auto">
           {column.tasks.map((task, key) => {
-            return (
-              <Task
-                key={key}
-                task={task}
-              />
-            );
+            return <Task key={key} task={task} />;
           })}
         </div>
         <AddTaskButton handleOpenModal={handleOpenAddTask} />
@@ -108,19 +72,11 @@ const Column = ({
         handleClose={handleCloseUpdateColumn}
         isHidden={isHiddenUpdateColumn}
       >
-        <UpdateColumnForm
-          handleSubmit={handleSubmitUpdateColumn}
-          onUpdate={onUpdateColumnName}
-          register={registerUpdateColumn}
-        />
+        <UpdateColumnForm column={column} />
       </Modal>
       {/* Add task Modal */}
       <Modal handleClose={handleCloseAddTask} isHidden={isHiddenAddTask}>
-        <AddTaskForm
-          onAddTask={onAddTask}
-          register={registerAddTask}
-          handleSubmit={handleSubmitAddTask}
-        />
+        <AddTaskForm column={column} />
       </Modal>
     </>
   );
