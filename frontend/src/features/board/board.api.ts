@@ -46,3 +46,14 @@ export const updateTask = async (id: string, name: string) => {
   const resp = await axios.patch<{ ok: boolean }>(`tasks/${id}/name`, { name });
   return resp.data.ok;
 };
+
+export const updateColumnPosion = async (
+  columnId: string,
+  newPosition: number
+) => {
+  const resp = await axios.patch<{ ok: boolean }>(
+    `columns/${columnId}/position`,
+    { position: newPosition }
+  );
+  return resp.data.ok;
+};

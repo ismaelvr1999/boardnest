@@ -6,9 +6,19 @@ import AddTaskButton from "./addTaskButton";
 import AddTaskForm from "./addTaskForm";
 import useColumn from "../hooks/column.hook";
 import type { IColumn } from "../board.types";
+import { useDraggable} from "@dnd-kit/core";
+import Droppable from "./droppable";
 
 const Column = ({ column }: { column: IColumn }) => {
   const { onDeleteColumn } = useColumn();
+
+  const {attributes,listeners,setNodeRef,transform} = useDraggable({
+    id: `${column.id}`
+  });
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+  }: undefined;
+
   const {
     isHidden: isHiddenUpdateColumn,
     handleOpen: handleOpenUpdateColumn,
@@ -22,7 +32,8 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useModal();
   return (
     <>
-      <div className="flex flex-col h-full w-90 border rounded-xl p-4 shrink-0 shadow-xl/15 shadow-white">
+    <Droppable id={column.position}/>
+      <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="flex flex-col h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white" >
         <div className="flex">
           {/* Delete and Update column*/}
           <h1 className="text-2xl font-bold h-fit">{column.name}</h1>
@@ -65,6 +76,7 @@ const Column = ({ column }: { column: IColumn }) => {
             return <Task key={key} task={task} />;
           })}
         </div>
+        
         <AddTaskButton handleOpenModal={handleOpenAddTask} />
       </div>
       {/* Update Column Modal */}
