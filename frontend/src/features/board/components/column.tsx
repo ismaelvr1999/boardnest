@@ -13,7 +13,10 @@ const Column = ({ column }: { column: IColumn }) => {
   const { onDeleteColumn } = useColumn();
 
   const {attributes,listeners,setNodeRef,transform} = useDraggable({
-    id: `${column.id}`
+    id: `${column.id}`,
+    data:{
+      position: column.position
+    }
   });
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,

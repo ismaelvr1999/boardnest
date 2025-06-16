@@ -60,6 +60,7 @@ export type BoardContexType = {
   reloadBoard: ()=> Promise<void>;
   board: BoardWithColumns | undefined;
   boardId:string | undefined;
+  setBoard: React.Dispatch<React.SetStateAction<BoardWithColumns | undefined>>;
 } | null; 
 
 

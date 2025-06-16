@@ -40,7 +40,7 @@ export const BoardProvider: BoardProviderType = () => {
   }, []);
 
   return (
-    <BoardContext.Provider value={{ reloadBoard, board, boardId: id }}>
+    <BoardContext.Provider value={{ reloadBoard, board, boardId: id, setBoard}}>
       <Outlet/>
     </BoardContext.Provider>
   );

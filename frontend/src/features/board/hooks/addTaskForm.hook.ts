@@ -3,6 +3,7 @@ import { UseBoardContext } from "../boardContext";
 import { addTask } from "../board.api";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { AddTaskFormApi, IColumn } from "../board.types";
+import { useEffect } from "react";
 
 const useAddTaskForm = (column:IColumn) => {
   const { reloadBoard } = UseBoardContext();
@@ -15,12 +16,19 @@ const useAddTaskForm = (column:IColumn) => {
       toast.error((error as Error).message);
     }
   };
-  const { register, handleSubmit } = useForm<AddTaskFormApi>({
+  const { register, handleSubmit,reset } = useForm<AddTaskFormApi>({
     defaultValues: {
       ColumnId: column.id,
       BoardId: column.BoardId,
     },
   });
+  useEffect(() => {
+    reset({
+      ColumnId: column.id,
+      BoardId: column.BoardId,
+    });
+  }, [column]);
+
 
   return {register,handleSubmit,onAddTask}
 };
