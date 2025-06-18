@@ -3,7 +3,25 @@ import useModal from "../../../hooks/modal.hook";
 import type { ITask } from "../board.types";
 import UpdateTaskForm from "./updateTaskForm";
 import useTask from "../hooks/task.hook";
+import { useDraggable } from "@dnd-kit/core";
+import type { CSSProperties } from 'react';
+
 const Task = ({ task }: {task:ITask}) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: `${task.id}`,
+    data: {
+      position: task.position,
+    },
+  });
+
+  const style: CSSProperties | undefined = transform
+  ? {
+      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      position: 'absolute',
+      zIndex: 1,
+    }
+  : undefined;
+
   const {onDeleteTask} =useTask()
   const {
     isHidden: isHiddenUpdateTask,
@@ -12,7 +30,7 @@ const Task = ({ task }: {task:ITask}) => {
   } = useModal();
   return (
     <>
-      <div className="w-full h-fit border rounded-xl p-2 my-3">
+      <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2 my-3" ref={setNodeRef} {...listeners} {...attributes}>
         <p className="text-xl mb-2">{task.name}</p>
         <div className="flex justify-between">
           <button

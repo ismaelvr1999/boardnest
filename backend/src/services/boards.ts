@@ -28,12 +28,22 @@ export default class BoardsService {
         id: boardId,
         UserId: userId,
       },
-      include: {
-        model: BoardColumn,
-        include:[Task],
-        order: [[{ model:Task, as: "tasks" }, "position"]]
-      },
-      order: [[{ model: BoardColumn, as: "boardColumns" }, "position"]],
+      include: [
+        {
+          model: BoardColumn,
+          as: "boardColumns",
+          include: [
+            {
+              model: Task,
+              as: "tasks",
+            },
+          ],
+        },
+      ],
+      order: [
+        [{ model: BoardColumn, as: "boardColumns" }, "position", "ASC"],
+        [{ model: BoardColumn, as: "boardColumns" },{ model: Task, as: "tasks" },"position","ASC"],
+      ],
     });
     if (!(board instanceof Board)) {
       throw new HttpError(404, "Board not found");

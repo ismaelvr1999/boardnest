@@ -6,21 +6,24 @@ import AddTaskButton from "./addTaskButton";
 import AddTaskForm from "./addTaskForm";
 import useColumn from "../hooks/column.hook";
 import type { IColumn } from "../board.types";
-import { useDraggable} from "@dnd-kit/core";
+import { useDraggable } from "@dnd-kit/core";
 import Droppable from "./droppable";
 
 const Column = ({ column }: { column: IColumn }) => {
   const { onDeleteColumn } = useColumn();
 
-  const {attributes,listeners,setNodeRef,transform} = useDraggable({
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${column.id}`,
-    data:{
-      position: column.position
-    }
+    data: {
+      position: column.position,
+    },
   });
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  }: undefined;
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        zIndex: 1,
+      }
+    : undefined;
 
   const {
     isHidden: isHiddenUpdateColumn,
@@ -35,10 +38,14 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useModal();
   return (
     <>
-    <Droppable id={column.position}/>
-      <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="flex flex-col h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white" >
+      <Droppable position={column.position} />
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="flex relative flex-col h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white"
+      >
         <div className="flex">
-          {/* Delete and Update column*/}
+          {/* Delete, Update and Drag column*/}
           <h1 className="text-2xl font-bold h-fit">{column.name}</h1>
           <button
             className="text-red-300 cursor-pointer ml-auto"
@@ -72,6 +79,24 @@ const Column = ({ column }: { column: IColumn }) => {
               ></path>
             </svg>
           </button>
+
+          <button
+            className="cursor-grab ml-2"
+            {...listeners}
+            {...attributes}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={30}
+              height={30}
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M8.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m0 6.5a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0M15.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m-1.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"
+              ></path>
+            </svg>
+          </button>
         </div>
         {/* Tasks */}
         <div className="overflow-y-auto">
@@ -79,7 +104,7 @@ const Column = ({ column }: { column: IColumn }) => {
             return <Task key={key} task={task} />;
           })}
         </div>
-        
+
         <AddTaskButton handleOpenModal={handleOpenAddTask} />
       </div>
       {/* Update Column Modal */}
