@@ -12,8 +12,9 @@ import Droppable from "../features/board/components/droppable";
 import UseBoard from "../features/board/hooks/board.hook";
 
 const Board = () => {
-  const { board } = UseBoardContext();
+  const { board,handleDragStart } = UseBoardContext();
   const {handleDragEnd,sensors} = UseBoard(); 
+ 
 
   const {
     isHidden: isHiddenUpdateBoard,
@@ -35,12 +36,12 @@ const Board = () => {
       />
       {/*columns container*/}
       <div className="flex gap-0 pt-4 h-full overflow-x-auto">
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd} onDragStart={handleDragStart} > 
           {board &&
             board.boardColumns.map((column, key) => {
               return <Column column={column} key={key} />;
             })}
-          {board && board.totalColumns > 0 && <Droppable position={board.totalColumns+1}/>}
+          {board && board.totalColumns > 0 && <Droppable position={board.totalColumns+1} />}
         </DndContext>
         <AddColumnButton handleOpenModal={handleOpenAddColumn} />
       </div>

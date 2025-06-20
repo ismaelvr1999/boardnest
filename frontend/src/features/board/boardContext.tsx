@@ -3,7 +3,9 @@ import type {
   BoardContexType,
   BoardProviderType,
   BoardWithColumns,
+  DraggableRoleType,
 } from "./board.types";
+import type { DragStartEvent } from "@dnd-kit/core";
 import { useParams } from "react-router-dom";
 import { getBoard } from "./board.api";
 import { toast } from "react-toastify";
@@ -19,6 +21,7 @@ export const UseBoardContext = () => {
 export const BoardProvider: BoardProviderType = () => {
   const { id } = useParams<string>();
   const [board, setBoard] = useState<BoardWithColumns>();
+  const [currentDraggableRole,setCurrentDraggableRole] = useState<DraggableRoleType>();
 
   const reloadBoard = async () => {
     if (typeof id === "undefined") return;
@@ -39,8 +42,17 @@ export const BoardProvider: BoardProviderType = () => {
     }
   }, []);
 
+  const handleDragStart = (event:DragStartEvent ) => {
+    if (!event.active) {
+      return;
+    }
+    const {active} = event;
+    setCurrentDraggableRole(active.data.current?.role)
+    
+  }
+
   return (
-    <BoardContext.Provider value={{ reloadBoard, board, boardId: id, setBoard}}>
+    <BoardContext.Provider value={{ reloadBoard, board, boardId: id, setBoard, currentDraggableRole, handleDragStart}}>
       <Outlet/>
     </BoardContext.Provider>
   );

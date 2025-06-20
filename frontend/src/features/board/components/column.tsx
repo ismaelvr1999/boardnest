@@ -16,6 +16,7 @@ const Column = ({ column }: { column: IColumn }) => {
     id: `${column.id}`,
     data: {
       position: column.position,
+      role: "column"
     },
   });
   const style = transform
@@ -38,7 +39,7 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useModal();
   return (
     <>
-      <Droppable position={column.position} />
+      <Droppable position={column.position}/>
       <div
         ref={setNodeRef}
         style={style}

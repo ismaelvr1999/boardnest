@@ -1,3 +1,4 @@
+import type { DragStartEvent } from "@dnd-kit/core";
 import type { Board } from "../boards/boards.types";
 import type {JSX} from "react";
 
@@ -56,11 +57,15 @@ export interface UpdateTaskFormApi {
   name: string;
 }
 
+export type DraggableRoleType = undefined | "task" | "column";
+
 export type BoardContexType = {
   reloadBoard: ()=> Promise<void>;
   board: BoardWithColumns | undefined;
+  currentDraggableRole: DraggableRoleType
   boardId:string | undefined;
   setBoard: React.Dispatch<React.SetStateAction<BoardWithColumns | undefined>>;
+  handleDragStart: (event:DragStartEvent) => void;
 } | null; 
 
 

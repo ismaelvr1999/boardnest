@@ -3,6 +3,7 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import { UseBoardContext } from "../boardContext";
 import { updateColumnPosion } from "../board.api";
@@ -53,7 +54,15 @@ const UseBoard = () => {
     await reloadBoard();
   };
 
-  return { handleDragEnd, sensors };
+  const handleDragStart = (event:DragStartEvent ) => {
+    if (!event.active) {
+      return;
+    }
+    console.log(event.active.data.current?.role);
+    
+  }
+
+  return { handleDragEnd, sensors, handleDragStart };
 };
 
 export default UseBoard;

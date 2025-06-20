@@ -11,6 +11,7 @@ const Task = ({ task }: {task:ITask}) => {
     id: `${task.id}`,
     data: {
       position: task.position,
+      role: "task"
     },
   });
 
