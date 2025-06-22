@@ -3,13 +3,12 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-  type DragStartEvent,
 } from "@dnd-kit/core";
 import { UseBoardContext } from "../boardContext";
 import { updateColumnPosion } from "../board.api";
 
 const UseBoard = () => {
-  const { board, reloadBoard, setBoard } = UseBoardContext();
+  const { board, reloadBoard, setBoard, currentDraggableRole } = UseBoardContext();
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 5,
@@ -17,7 +16,7 @@ const UseBoard = () => {
   });
   const sensors = useSensors(mouseSensor);
 
-  const moveColumn = (currentPosition: number, newPosition: number) => {
+  const moveColumn = async (columnId:string,currentPosition: number, newPosition: number) => {
     if (!board) {
       return;
     }
@@ -32,8 +31,14 @@ const UseBoard = () => {
       (column) => column.id !== currentColumn.id
     );
     tempBoard.boardColumns.splice(startIndex, 0, currentColumn);
-
     setBoard(tempBoard);
+  
+    if (currentPosition >= newPosition) {
+        await updateColumnPosion(columnId, Number(newPosition));
+      } else {
+        await updateColumnPosion(columnId, Number(newPosition) - 1);
+      }
+      await reloadBoard();
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
@@ -42,27 +47,24 @@ const UseBoard = () => {
     }
     const { over, active } = event;
     const currentPosition = active.data.current?.position;
+    const droppableRole = over.data.current?.role;
     const newPosition = over.data.current?.position;
-    const columnId = String(active.id);
-    moveColumn(currentPosition, newPosition);
-    if (currentPosition >= newPosition) {
-      await updateColumnPosion(columnId, Number(newPosition));
-    } else {
-      await updateColumnPosion(columnId, Number(newPosition) - 1);
-    }
+    const elementId = String(active.id);
 
-    await reloadBoard();
+    if(currentDraggableRole ==="column" && droppableRole=="droppable-column") {
+      await moveColumn(elementId,currentPosition,newPosition);
+    }
+    else if (currentDraggableRole ==="task" && droppableRole=="task"){
+      //TODO
+    }
+    else{
+
+    }
+    
+
   };
 
-  const handleDragStart = (event:DragStartEvent ) => {
-    if (!event.active) {
-      return;
-    }
-    console.log(event.active.data.current?.role);
-    
-  }
-
-  return { handleDragEnd, sensors, handleDragStart };
+  return { handleDragEnd, sensors };
 };
 
 export default UseBoard;

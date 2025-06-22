@@ -3,7 +3,7 @@ import type{ ModalProps } from "../types/modal.types";
 const Modal = ({children,handleClose,isHidden}:ModalProps) => {
 
     return (
-    <div className={`absolute w-full h-full bg-neutral-500/30 top-0 left-0 justify-center items-center ${isHidden?'hidden':"flex"}` } id="modal-container" onClick={handleClose}>
+    <div className={`absolute w-full h-full z-10 bg-neutral-500/30 top-0 left-0 justify-center items-center ${isHidden?'hidden':"flex"}` } id="modal-container" onClick={handleClose}>
       <div  onClick={(e) => e.stopPropagation()} className="border relative w-1/2 bg-neutral-800 py-2 px-4 rounded-lg" id="content">
         <header className="flex justify-end">
           <button onClick={handleClose} id="close-button" className="cursor-pointer">

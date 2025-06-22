@@ -17,8 +17,6 @@ Kanban-style task management web app that enables users to organize workflows, v
 
 ## Backend
 
-To get started with this API, follow these steps:
-
 1. **Clone the repository.**
 
    ````bash
@@ -49,6 +47,26 @@ Create a .env file add the following variables:
     ```bash
     pnpm run dev
     ```
+## Frontend
+
+1. **Install dependencies.**
+
+   ````bash
+   cd  boardnest
+   cd  frontend
+   pnpm install
+   ````
+
+2. **Set up environment variables.**
+Create a .env file add the following variables:
+   ```env
+   VITE_API_URL = 
+   ```
+3. **Start the client.**
+    ```bash
+    pnpm run dev
+    ```
+
 # Api Documentation
 
 The documentation is available at the following URL:
