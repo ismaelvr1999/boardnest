@@ -2,11 +2,11 @@ import { useDroppable } from "@dnd-kit/core"
 import { UseBoardContext } from "../boardContext";
 import { useEffect, useState } from "react";
 
-const Droppable= ({position}:{position:number})=>{
+const DroppableColumn= ({position}:{position:number})=>{
     const {currentDraggableRole} = UseBoardContext();
     const [className, setClassName] = useState("w-4 h-full shrink-0");
     const {isOver,setNodeRef} = useDroppable({
-        id: `droppable-${position}`,
+        id: `droppableColumn-${position}`,
         data:{
             position,
             role:"droppable-column"
@@ -28,4 +28,4 @@ const Droppable= ({position}:{position:number})=>{
     )
 }
 
-export default Droppable;
+export default DroppableColumn;

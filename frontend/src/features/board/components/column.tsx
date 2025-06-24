@@ -7,7 +7,7 @@ import AddTaskForm from "./addTaskForm";
 import useColumn from "../hooks/column.hook";
 import type { IColumn } from "../board.types";
 import { useDraggable } from "@dnd-kit/core";
-import Droppable from "./droppable";
+import DroppableColumn from "./droppableColumn";
 
 const Column = ({ column }: { column: IColumn }) => {
   const { onDeleteColumn } = useColumn();
@@ -39,7 +39,7 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useModal();
   return (
     <>
-      <Droppable position={column.position}/>
+      <DroppableColumn position={column.position}/>
       <div
         ref={setNodeRef}
         style={style}

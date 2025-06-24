@@ -5,13 +5,14 @@ import UpdateTaskForm from "./updateTaskForm";
 import useTask from "../hooks/task.hook";
 import { useDraggable } from "@dnd-kit/core";
 import type { CSSProperties } from 'react';
-
+import DroppableTask from "./droppableTask";
 const Task = ({ task }: {task:ITask}) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${task.id}`,
     data: {
       position: task.position,
-      role: "task"
+      role: "task",
+      columnId: task.ColumnId
     },
   });
 
@@ -31,8 +32,28 @@ const Task = ({ task }: {task:ITask}) => {
   } = useModal();
   return (
     <>
-      <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2 my-3" ref={setNodeRef} {...listeners} {...attributes}>
-        <p className="text-xl mb-2">{task.name}</p>
+      <DroppableTask position={task.position} taskId={task.id} columnId={task.ColumnId}/>
+      <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2 my-3" ref={setNodeRef}>
+        <div className="flex">
+          <p className="text-xl mb-2">{task.name}</p>
+          <button
+            className="cursor-grab ml-auto"
+            {...listeners}
+            {...attributes}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={25}
+              height={25}
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M8.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m0 6.5a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0M15.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m-1.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"
+              ></path>
+            </svg>
+          </button>
+        </div>
         <div className="flex justify-between">
           <button
             className="text-red-300 cursor-pointer"

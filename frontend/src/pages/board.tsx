@@ -8,13 +8,12 @@ import AddColumnButton from "../features/board/components/addColumnButton";
 import Toast from "../components/toast";
 import { UseBoardContext } from "../features/board/boardContext";
 import {DndContext} from "@dnd-kit/core";
-import Droppable from "../features/board/components/droppable";
+import DroppableColumn from "../features/board/components/droppableColumn";
 import UseBoard from "../features/board/hooks/board.hook";
 
 const Board = () => {
   const { board,handleDragStart } = UseBoardContext();
   const {handleDragEnd,sensors} = UseBoard(); 
- 
 
   const {
     isHidden: isHiddenUpdateBoard,
@@ -41,7 +40,7 @@ const Board = () => {
             board.boardColumns.map((column, key) => {
               return <Column column={column} key={key} />;
             })}
-          {board && board.totalColumns > 0 && <Droppable position={board.totalColumns+1} />}
+          {board && board.totalColumns > 0 && <DroppableColumn position={board.totalColumns+1} />}
         </DndContext>
         <AddColumnButton handleOpenModal={handleOpenAddColumn} />
       </div>

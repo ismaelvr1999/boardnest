@@ -8,7 +8,7 @@ import { UseBoardContext } from "../boardContext";
 import { updateColumnPosion } from "../board.api";
 
 const UseBoard = () => {
-  const { board, reloadBoard, setBoard, currentDraggableRole } = UseBoardContext();
+  const { board, reloadBoard, setBoard } = UseBoardContext();
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 5,
@@ -41,6 +41,13 @@ const UseBoard = () => {
       await reloadBoard();
   };
 
+  const moveTask = (taskId:string,currentColumnId:string,newColumnId:string,currentPosition:string,newPosition:string) =>{
+    if (!board) {
+      return;
+    }
+
+  }
+
   const handleDragEnd = async (event: DragEndEvent) => {
     if (!event.over) {
       return;
@@ -48,14 +55,17 @@ const UseBoard = () => {
     const { over, active } = event;
     const currentPosition = active.data.current?.position;
     const droppableRole = over.data.current?.role;
+    const draggableRole = active.data.current?.role;
     const newPosition = over.data.current?.position;
     const elementId = String(active.id);
 
-    if(currentDraggableRole ==="column" && droppableRole=="droppable-column") {
+    if(draggableRole ==="column" && droppableRole=="droppable-column") {
       await moveColumn(elementId,currentPosition,newPosition);
     }
-    else if (currentDraggableRole ==="task" && droppableRole=="task"){
-      //TODO
+    else if (draggableRole ==="task" && droppableRole=="droppable-task"){
+      const currentColumnId =  active.data.current?.columnId;
+      const newColumnId =  active.data.current?.columnId;
+      moveTask(elementId,currentColumnId,newColumnId,currentPosition,newPosition);
     }
     else{
 
