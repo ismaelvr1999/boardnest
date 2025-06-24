@@ -6,11 +6,12 @@ import useTask from "../hooks/task.hook";
 import { useDraggable } from "@dnd-kit/core";
 import type { CSSProperties } from 'react';
 import DroppableTask from "./droppableTask";
-const Task = ({ task }: {task:ITask}) => {
+const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${task.id}`,
     data: {
       position: task.position,
+      columnPosition,
       role: "task",
       columnId: task.ColumnId
     },
@@ -33,7 +34,7 @@ const Task = ({ task }: {task:ITask}) => {
   return (
     <>
       <DroppableTask position={task.position} taskId={task.id} columnId={task.ColumnId}/>
-      <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2 my-3" ref={setNodeRef}>
+      <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2" ref={setNodeRef}>
         <div className="flex">
           <p className="text-xl mb-2">{task.name}</p>
           <button

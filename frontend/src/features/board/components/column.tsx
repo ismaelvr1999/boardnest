@@ -8,6 +8,7 @@ import useColumn from "../hooks/column.hook";
 import type { IColumn } from "../board.types";
 import { useDraggable } from "@dnd-kit/core";
 import DroppableColumn from "./droppableColumn";
+import DroppableTask from "./droppableTask";
 
 const Column = ({ column }: { column: IColumn }) => {
   const { onDeleteColumn } = useColumn();
@@ -16,7 +17,7 @@ const Column = ({ column }: { column: IColumn }) => {
     id: `${column.id}`,
     data: {
       position: column.position,
-      role: "column"
+      role: "column",
     },
   });
   const style = transform
@@ -43,8 +44,8 @@ const Column = ({ column }: { column: IColumn }) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="flex relative flex-col h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white"
-      >
+        className={`flex flex-col relative h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white`}
+      > {/* TODO: Fixed edit task modal by toggle relative class */}
         <div className="flex">
           {/* Delete, Update and Drag column*/}
           <h1 className="text-2xl font-bold h-fit">{column.name}</h1>
@@ -102,8 +103,9 @@ const Column = ({ column }: { column: IColumn }) => {
         {/* Tasks */}
         <div className="overflow-y-auto">
           {column.tasks.map((task, key) => {
-            return <Task key={key} task={task} />;
+            return <Task key={key} task={task} columnPosition={column.position}/>;
           })}
+          { column.totalTasks > 0 && <DroppableTask position={column.totalTasks+1} taskId={column.tasks[column.totalTasks-1].id} columnId={column.id}/>}
         </div>
 
         <AddTaskButton handleOpenModal={handleOpenAddTask} />
