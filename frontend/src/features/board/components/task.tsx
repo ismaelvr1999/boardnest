@@ -33,7 +33,7 @@ const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
   } = useModal();
   return (
     <>
-      <DroppableTask position={task.position} taskId={task.id} columnId={task.ColumnId}/>
+      <DroppableTask columnPosition={columnPosition} position={task.position} taskId={task.id} columnId={task.ColumnId}/>
       <div style={style} className="w-full h-fit bg-[#1E1E1E] border rounded-xl p-2" ref={setNodeRef}>
         <div className="flex">
           <p className="text-xl mb-2">{task.name}</p>

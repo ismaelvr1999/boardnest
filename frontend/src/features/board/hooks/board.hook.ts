@@ -47,13 +47,26 @@ const UseBoard = () => {
     newColumnId: string, 
     currentPosition: number, 
     newPosition: number, 
-    currentColumnPosition: number) => {
+    currentColumnPosition: number,
+    newColumnPosition: number) => {
     if (!board) {
       return;
     }
     let tempBoard = { ...board };
     if (newColumnId !== currentColumnId) {
-      return;
+      let currentColumn = { ...tempBoard.boardColumns[currentColumnPosition - 1] };
+      let newColumn = {...tempBoard.boardColumns[newColumnPosition-1]};
+      const currentTask = {...currentColumn.tasks[currentPosition - 1]};
+      const startIndex = newPosition-1;
+      console.log(startIndex);
+      currentColumn.tasks = currentColumn.tasks.filter(task => task.id !== taskId);
+      newColumn.tasks.splice(startIndex,0,currentTask);
+      newColumn.totalTasks = newColumn.totalTasks+1
+      currentColumn.totalTasks = currentColumn.totalTasks -1;
+      tempBoard.boardColumns[currentColumnPosition - 1] = currentColumn;
+      tempBoard.boardColumns[newColumnPosition - 1] = newColumn;
+      
+      setBoard(tempBoard);
     }
     else {
       let currentColumn = { ...tempBoard.boardColumns[currentColumnPosition - 1] };
@@ -66,13 +79,14 @@ const UseBoard = () => {
       currentColumn.tasks.splice(startIndex, 0, currentTask);
       tempBoard.boardColumns[currentColumnPosition - 1] = currentColumn;
       setBoard(tempBoard);
-    }
     if (currentPosition >= newPosition) {
       await updateTaskPosition(taskId, newPosition, newColumnId);
     } else {
       await updateTaskPosition(taskId, newPosition - 1, newColumnId);
     }
     await reloadBoard();
+    }
+
   }
 
   const handleDragEnd = async (event: DragEndEvent) => {
@@ -92,8 +106,9 @@ const UseBoard = () => {
     else if (draggableRole === "task" && droppableRole == "droppable-task") {
       const currentColumnId = active.data.current?.columnId;
       const newColumnId = over.data.current?.columnId;
-      const currentColumnPosition = active.data.current?.columnPosition
-      moveTask(elementId, currentColumnId, newColumnId, currentPosition, newPosition, currentColumnPosition);
+      const currentColumnPosition = active.data.current?.columnPosition;
+      const newColumnPosition = over.data.current?.columnPosition;
+      moveTask(elementId, currentColumnId, newColumnId, currentPosition, newPosition, currentColumnPosition,newColumnPosition);
     }
     else {
 

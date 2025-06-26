@@ -105,7 +105,7 @@ const Column = ({ column }: { column: IColumn }) => {
           {column.tasks.map((task, key) => {
             return <Task key={key} task={task} columnPosition={column.position}/>;
           })}
-          { column.totalTasks > 0 && <DroppableTask position={column.totalTasks+1} taskId={column.tasks[column.totalTasks-1].id} columnId={column.id}/>}
+          { column.totalTasks > 0 && <DroppableTask columnPosition={column.position} position={column.totalTasks+1} taskId={column.tasks[column.totalTasks-1].id} columnId={column.id}/>}
         </div>
 
         <AddTaskButton handleOpenModal={handleOpenAddTask} />

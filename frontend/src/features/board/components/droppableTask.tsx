@@ -2,7 +2,7 @@ import { useDroppable } from "@dnd-kit/core"
 import { UseBoardContext } from "../boardContext";
 import { useEffect, useState } from "react";
 
-const DroppableTask = ({position,taskId,columnId}:{position:number,taskId:string,columnId:string})=>{
+const DroppableTask = ({position,taskId,columnId,columnPosition}:{position:number,taskId:string,columnId:string,columnPosition:number})=>{
     const {currentDraggableRole} = UseBoardContext();
     const [className, setClassName] = useState("w-full h-4 shrink-0");
     const {isOver,setNodeRef} = useDroppable({
@@ -10,7 +10,8 @@ const DroppableTask = ({position,taskId,columnId}:{position:number,taskId:string
         data:{
             position,
             role:"droppable-task",
-            columnId
+            columnId ,
+            columnPosition
         }
     });
     useEffect(()=>{
