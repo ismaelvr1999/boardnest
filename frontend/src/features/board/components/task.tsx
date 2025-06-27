@@ -6,6 +6,9 @@ import useTask from "../hooks/task.hook";
 import { useDraggable } from "@dnd-kit/core";
 import type { CSSProperties } from 'react';
 import DroppableTask from "./droppableTask";
+import EditIcon from "../../../components/icons/editIcon";
+import DeleteIcon from "../../../components/icons/deleteIcon";
+import DragIcon from "../../../components/icons/dragIcon";
 const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${task.id}`,
@@ -42,17 +45,7 @@ const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
             {...listeners}
             {...attributes}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={25}
-              height={25}
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M8.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m0 6.5a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0M15.5 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m1.5 5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m-1.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"
-              ></path>
-            </svg>
+            <DragIcon width={25} height={25} />
           </button>
         </div>
         <div className="flex justify-between">
@@ -60,33 +53,13 @@ const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
             className="text-red-300 cursor-pointer"
             onClick={() => onDeleteTask(task.id)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={30}
-              height={30}
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg>
+            <DeleteIcon height={30} width={30} />
           </button>
           <button
             className="text-blue-300 cursor-pointer"
             onClick={handleOpenUpdateTask}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={30}
-              height={30}
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M5 19h1.098L16.796 8.302l-1.098-1.098L5 17.902zm-1 1v-2.52L17.18 4.288q.155-.137.34-.212T17.907 4t.39.064q.19.063.35.228l1.067 1.074q.165.159.226.35q.06.19.06.38q0 .204-.068.39q-.069.185-.218.339L6.519 20zM19.02 6.092l-1.112-1.111zm-2.782 1.67l-.54-.558l1.098 1.098z"
-              ></path>
-            </svg>
+            <EditIcon height={30} width={30} />
           </button>
         </div>
       </div>

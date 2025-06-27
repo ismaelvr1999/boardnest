@@ -42,31 +42,49 @@ const UseBoard = () => {
   };
 
   const moveTask = async (
-    taskId: string, 
-    currentColumnId: string, 
-    newColumnId: string, 
-    currentPosition: number, 
-    newPosition: number, 
+    taskId: string,
+    currentColumnId: string,
+    newColumnId: string,
+    currentPosition: number,
+    newPosition: number,
     currentColumnPosition: number,
     newColumnPosition: number) => {
     if (!board) {
       return;
     }
-    let tempBoard = { ...board };
-    if (newColumnId !== currentColumnId) {
+    let tempBoard = { ...board }
+    if(newPosition === 0) {
       let currentColumn = { ...tempBoard.boardColumns[currentColumnPosition - 1] };
-      let newColumn = {...tempBoard.boardColumns[newColumnPosition-1]};
-      const currentTask = {...currentColumn.tasks[currentPosition - 1]};
-      const startIndex = newPosition-1;
-      console.log(startIndex);
+      let newColumn = { ...tempBoard.boardColumns[newColumnPosition - 1] };
+      const currentTask = { ...currentColumn.tasks[currentPosition - 1] };
+      const newTaskList = [...newColumn.tasks]
+      newTaskList.push(currentTask);
+      newColumn.tasks = newTaskList;
       currentColumn.tasks = currentColumn.tasks.filter(task => task.id !== taskId);
-      newColumn.tasks.splice(startIndex,0,currentTask);
-      newColumn.totalTasks = newColumn.totalTasks+1
-      currentColumn.totalTasks = currentColumn.totalTasks -1;
+      newColumn.totalTasks = newColumn.totalTasks + 1
+      currentColumn.totalTasks = currentColumn.totalTasks - 1;
       tempBoard.boardColumns[currentColumnPosition - 1] = currentColumn;
       tempBoard.boardColumns[newColumnPosition - 1] = newColumn;
-      
       setBoard(tempBoard);
+      await updateTaskPosition(taskId, 1, newColumnId);
+      await reloadBoard();
+      return ;
+    }
+    else if (newColumnId !== currentColumnId) {
+      let currentColumn = { ...tempBoard.boardColumns[currentColumnPosition - 1] };
+      let newColumn = { ...tempBoard.boardColumns[newColumnPosition - 1] };
+      const currentTask = { ...currentColumn.tasks[currentPosition - 1] };
+      const startIndex = newPosition - 1;
+      currentColumn.tasks = currentColumn.tasks.filter(task => task.id !== taskId);
+      newColumn.tasks.splice(startIndex, 0, currentTask);
+      newColumn.totalTasks = newColumn.totalTasks + 1
+      currentColumn.totalTasks = currentColumn.totalTasks - 1;
+      tempBoard.boardColumns[currentColumnPosition - 1] = currentColumn;
+      tempBoard.boardColumns[newColumnPosition - 1] = newColumn;
+      setBoard(tempBoard);
+      
+      await updateTaskPosition(taskId, newPosition, newColumnId);
+      await reloadBoard();
     }
     else {
       let currentColumn = { ...tempBoard.boardColumns[currentColumnPosition - 1] };
@@ -79,12 +97,12 @@ const UseBoard = () => {
       currentColumn.tasks.splice(startIndex, 0, currentTask);
       tempBoard.boardColumns[currentColumnPosition - 1] = currentColumn;
       setBoard(tempBoard);
-    if (currentPosition >= newPosition) {
-      await updateTaskPosition(taskId, newPosition, newColumnId);
-    } else {
-      await updateTaskPosition(taskId, newPosition - 1, newColumnId);
-    }
-    await reloadBoard();
+      if (currentPosition >= newPosition) {
+        await updateTaskPosition(taskId, newPosition, newColumnId);
+      } else {
+        await updateTaskPosition(taskId, newPosition-1, newColumnId);
+      }
+      await reloadBoard();
     }
 
   }
@@ -108,13 +126,8 @@ const UseBoard = () => {
       const newColumnId = over.data.current?.columnId;
       const currentColumnPosition = active.data.current?.columnPosition;
       const newColumnPosition = over.data.current?.columnPosition;
-      moveTask(elementId, currentColumnId, newColumnId, currentPosition, newPosition, currentColumnPosition,newColumnPosition);
+      moveTask(elementId, currentColumnId, newColumnId, currentPosition, newPosition, currentColumnPosition, newColumnPosition);
     }
-    else {
-
-    }
-
-
   };
 
   return { handleDragEnd, sensors };

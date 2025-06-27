@@ -53,7 +53,7 @@ export default class TasksService {
       task.newColumnId,
       userId
     );
-    //If the task was moved to its current position, Don't do nothing
+    //If the task was moved to its current position, Do nothing
     if (task.newPosition === currentPosition) {
       return;
     }
