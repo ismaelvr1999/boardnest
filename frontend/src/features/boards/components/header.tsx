@@ -16,7 +16,7 @@ const Header = ({
       <h1 className="text-4xl font-bold">My Boards</h1>
       <button
         onClick={handleOpen}
-        className="cursor-pointer ml-auto mr-5 border rounded-lg p-1 text-green-300"
+        className="cursor-pointer ml-auto mr-5 border rounded-lg p-1 text-green-300 hover:text-green-500 hover:scale-105 transform transition-transform duration-200 ease-in-out"
       >
         <AddIcon width={30} height={30} />
       </button>

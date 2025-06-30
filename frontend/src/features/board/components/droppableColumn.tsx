@@ -1,26 +1,7 @@
-import { useDroppable } from "@dnd-kit/core"
-import { UseBoardContext } from "../boardContext";
-import { useEffect, useState } from "react";
+import useDroppableColumn from "../hooks/droppableColumn.hook";
 
 const DroppableColumn= ({position}:{position:number})=>{
-    const {currentDraggableRole} = UseBoardContext();
-    const [className, setClassName] = useState("w-4 h-full shrink-0");
-    const {isOver,setNodeRef} = useDroppable({
-        id: `droppableColumn-${position}`,
-        data:{
-            position,
-            role:"droppable-column"
-        }
-    });
-    useEffect(()=>{
-        if(currentDraggableRole == "column" && isOver) {
-            setClassName("w-4 h-full shrink-0 bg-white/10");
-        }
-        else {
-            setClassName("w-4 h-full shrink-0")
-        }
-    },[isOver]);
-
+    const {className, setNodeRef} = useDroppableColumn(position); 
     return (
         <div className={className} ref={setNodeRef} >
 

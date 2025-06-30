@@ -10,7 +10,7 @@ import { DraggrableColumnSchema, DraggrableTaskSchema, DroppableColumnSchema, Dr
 import type { DraggrableTaskType, DroppableTaskType } from "../board.types";
 
 const UseBoard = () => {
-  const { board, reloadBoard, setBoard } = UseBoardContext();
+  const { board, reloadBoard, setBoard, setCurrentDraggableRole } = UseBoardContext();
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 5,
@@ -114,6 +114,7 @@ const UseBoard = () => {
       droppable = DroppableTaskSchema.safeParse(droppable);
       await moveTask(draggable.data,droppable.data);
     }
+    setCurrentDraggableRole(undefined);
   };
 
   return { handleDragEnd, sensors };

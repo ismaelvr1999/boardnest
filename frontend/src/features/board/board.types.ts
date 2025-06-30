@@ -67,6 +67,7 @@ export type BoardContexType = {
   currentDraggableRole: DraggableRoleType
   boardId:string | undefined;
   setBoard: React.Dispatch<React.SetStateAction<BoardWithColumns | undefined>>;
+  setCurrentDraggableRole: React.Dispatch<React.SetStateAction<DraggableRoleType>>;
   handleDragStart: (event:DragStartEvent) => void;
 } | null; 
 

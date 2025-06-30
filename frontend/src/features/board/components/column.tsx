@@ -6,7 +6,6 @@ import AddTaskButton from "./addTaskButton";
 import AddTaskForm from "./addTaskForm";
 import useColumn from "../hooks/column.hook";
 import type { IColumn } from "../board.types";
-import { useDraggable } from "@dnd-kit/core";
 import DroppableColumn from "./droppableColumn";
 import DroppableTask from "./droppableTask";
 import DeleteIcon from "../../../components/icons/deleteIcon";
@@ -14,23 +13,7 @@ import EditIcon from "../../../components/icons/editIcon";
 import DragIcon from "../../../components/icons/dragIcon";
 
 const Column = ({ column }: { column: IColumn }) => {
-  const { onDeleteColumn } = useColumn();
-
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `${column.id}`,
-    data: {
-      id: column.id,
-      position: column.position,
-      role: "column",
-    },
-  });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        zIndex: 1,
-      }
-    : undefined;
-
+  const { onDeleteColumn, attributes, listeners, setNodeRef, style } = useColumn(column.id, column.position);
   const {
     isHidden: isHiddenUpdateColumn,
     handleOpen: handleOpenUpdateColumn,
@@ -44,23 +27,23 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useModal();
   return (
     <>
-      <DroppableColumn position={column.position}/>
+      <DroppableColumn position={column.position} />
       <div
         ref={setNodeRef}
         style={style}
-        className={`flex flex-col relative h-fit w-90 border rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white`}
-      > {/* TODO: Fixed edit task modal by toggle relative class */}
+        className={`flex flex-col h-fit w-90 border relative rounded-xl p-4 bg-[#1E1E1E] shrink-0 shadow-lg/20 shadow-white`}
+      > 
         <div className="flex">
           {/* Delete, Update and Drag column*/}
           <h1 className="text-2xl font-bold h-fit">{column.name}</h1>
           <button
-            className="text-red-300 cursor-pointer ml-auto"
+            className="text-red-300 cursor-pointer ml-auto hover:text-red-400 hover:scale-105 transform transition-transform duration-200 ease-in-out"
             onClick={() => onDeleteColumn(column.id)}
           >
-            <DeleteIcon height={30} width={30}/>
+            <DeleteIcon height={30} width={30} />
           </button>
           <button
-            className="text-blue-300 cursor-pointer ml-4"
+            className="text-blue-300 cursor-pointer ml-4 hover:text-blue-400 hover:scale-105 transform transition-transform duration-200 ease-in-out"
             onClick={handleOpenUpdateColumn}
           >
             <EditIcon height={30} width={30} />
@@ -77,11 +60,11 @@ const Column = ({ column }: { column: IColumn }) => {
         {/* Tasks */}
         <div className="overflow-y-auto">
           {column.tasks.map((task, key) => {
-            return <Task key={key} task={task} columnPosition={column.position}/>;
+            return <Task key={key} task={task} columnPosition={column.position} />;
           })}
-          { column.totalTasks > 0 ? 
-          <DroppableTask columnPosition={column.position} position={column.totalTasks+1} taskId={column.tasks[column.totalTasks-1].id} columnId={column.id}/>
-          : <DroppableTask columnPosition={column.position} position={0} taskId={column.id+"1"} columnId={column.id}/>
+          {column.totalTasks > 0 ?
+            <DroppableTask columnPosition={column.position} position={column.totalTasks + 1} taskId={column.tasks[column.totalTasks - 1].id} columnId={column.id} />
+            : <DroppableTask columnPosition={column.position} position={0} taskId={column.id + "1"} columnId={column.id} />
           }
         </div>
 

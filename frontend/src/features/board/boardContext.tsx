@@ -52,7 +52,7 @@ export const BoardProvider: BoardProviderType = () => {
   }
 
   return (
-    <BoardContext.Provider value={{ reloadBoard, board, boardId: id, setBoard, currentDraggableRole, handleDragStart}}>
+    <BoardContext.Provider value={{ reloadBoard, board, boardId: id, setBoard, currentDraggableRole, handleDragStart, setCurrentDraggableRole}}>
       <Outlet/>
     </BoardContext.Provider>
   );
