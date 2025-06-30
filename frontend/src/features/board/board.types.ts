@@ -1,6 +1,8 @@
 import type { DragStartEvent } from "@dnd-kit/core";
 import type { Board } from "../boards/boards.types";
 import type {JSX} from "react";
+import * as z from "zod";
+import type { DraggrableColumnSchema, DraggrableTaskSchema, DroppableColumnSchema, DroppableTaskSchema } from "./board.schemas";
 
 export interface BoardWithColumns extends Board {
   boardColumns: IColumn[];
@@ -68,5 +70,12 @@ export type BoardContexType = {
   handleDragStart: (event:DragStartEvent) => void;
 } | null; 
 
-
 export type BoardProviderType = () => JSX.Element;
+
+export type DraggrableColumnType = z.infer<typeof DraggrableColumnSchema>;
+
+export type DraggrableTaskType = z.infer<typeof DraggrableTaskSchema>;
+
+export type DroppableColumnType = z.infer<typeof DroppableColumnSchema>;
+
+export type DroppableTaskType = z.infer<typeof DroppableTaskSchema>;

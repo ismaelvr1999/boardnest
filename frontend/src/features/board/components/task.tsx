@@ -13,6 +13,7 @@ const Task = ({ task,columnPosition }: {task:ITask,columnPosition:number}) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${task.id}`,
     data: {
+      id: task.id,
       position: task.position,
       columnPosition,
       role: "task",

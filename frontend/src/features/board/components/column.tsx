@@ -19,6 +19,7 @@ const Column = ({ column }: { column: IColumn }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `${column.id}`,
     data: {
+      id: column.id,
       position: column.position,
       role: "column",
     },
