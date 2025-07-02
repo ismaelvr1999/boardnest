@@ -30,12 +30,13 @@ export default class usersController {
   }
 
   async verifyToken(req:Request, res:Response){
-    const {username,firstName,lastName,email} =(req as AuthRequest).user;
+    const {username,firstName,lastName,email,picture} =(req as AuthRequest).user;
     const profile = {
       username,
       firstName,
       lastName,
-      email
+      email,
+      picture
     }
     res.status(200).json({ok:true,profile})
   }
@@ -48,5 +49,15 @@ export default class usersController {
         path:"/"
     })
     res.status(200).json({ok:true})
+  }
+
+  async addProfilePicture(req:Request,res:Response){
+    const {id} = (req as AuthRequest).user;
+    if(!req.file) {
+      res.status(400).send("No file uploaded");
+      return;
+    }
+    await this.service.addProfilePicture(req.file.filename,id);
+    res.status(200).send({ok:true});
   }
 }

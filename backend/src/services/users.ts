@@ -37,6 +37,7 @@ export default class usersService {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      picture: user.picture
     }
     const payload = {
       id: user.id,
@@ -60,5 +61,14 @@ export default class usersService {
       throw new HttpError(404,"User not found");
     }
     return user;
+  }
+
+  async addProfilePicture (pictureName:string,id:string){
+    await User.update({picture:pictureName},{
+      where:{
+        id
+      }
+    });
+
   }
 }

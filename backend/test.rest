@@ -25,7 +25,7 @@ Content-Type: application/json
     "password": "{{pass}}"
 }
 ###
-
+@username= {{login.response.body.profile.username}}
 # @name verifyToken
 GET {{host}}/users/verify
 Content-Type: application/json
@@ -34,6 +34,22 @@ Content-Type: application/json
 # @name logout
 GET {{host}}/users/logout
 Content-Type: application/json
+###
+
+# @name uploadProfileImage
+PATCH {{host}}/users/profile-picture
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+title
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="profile-picture"; filename="profile-picture.png"
+Content-Type: image/png
+
+< ./uploads/profile-pictures/default.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 ###
 
 # @name createBoard

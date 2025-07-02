@@ -1,8 +1,25 @@
 import { Router} from "express";
 import container from "../config";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import validate from "../middlewares/validate"
 import auth from "../middlewares/authenticate";
+import multer from "multer";
+import { AuthRequest } from "../types/authenticate.types";
+import path from "path";
+const storage = multer.diskStorage({
+    destination:(req,file,cb) =>{
+        cb(null,"uploads/profile-pictures/")
+    },
+    filename(req, file, cb) {
+        const {id} = (req as AuthRequest).user;
+        const ext = path.extname(file.originalname);
+        cb(null,id+Date.now()+ext);
+    },
+});
+
+const upload = multer({storage:storage});
+
+
 const router = Router();
 const controller = container.resolve("usersController");
 
@@ -26,5 +43,11 @@ router.get("/users/verify",
 router.get("/users/logout",
     auth,
     controller.logout.bind(controller)
+)
+
+router.patch(`/users/profile-picture`,
+    auth,
+    upload.single("profile-picture"),
+    controller.addProfilePicture.bind(controller)
 )
 export default router;

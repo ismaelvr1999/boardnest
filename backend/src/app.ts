@@ -46,12 +46,12 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(express.static(path.join(__dirname, '..', 'uploads')));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 app.use("/api",routers);
 
 app.get("/",async (_:Request,res:Response)  =>{ 
-    res.cookie("test_cookie","hello baker");
-    res.json({ok:true});
+    res.redirect("api-docs");
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

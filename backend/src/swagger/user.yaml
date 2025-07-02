@@ -81,6 +81,8 @@
                     email:
                       type: string
                       format: email
+                    picture:
+                      type: string
       400:
         $ref: "#/components/responses/BadRequest"
       401:
@@ -128,6 +130,40 @@
     responses:
       200:
         description: Successfully logout
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+      400:
+        $ref: "#/components/responses/BadRequest"
+      500:
+        $ref: "#/components/responses/InternalServerError"
+
+/api/users/profile-picture:
+  patch:
+    summary: Upload or update profile image
+    tags:
+      - User
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              text:
+                type: string
+                description: Title or description
+              profile-picture:
+                type: string
+                format: binary
+                description: The profile image file (PNG, JPEG, etc.)
+    responses:
+      200:
+        description: Successfully uploaded profile picture
         content:
           application/json:
             schema:

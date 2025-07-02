@@ -7,6 +7,7 @@ export interface JwtAuthPayload extends JwtPayload {
     email: string;
     firstName: string;
     lastName: string;
+    picture: string | null;
 }
 
 export interface AuthRequest extends Request{
