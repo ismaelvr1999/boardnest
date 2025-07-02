@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 # @name uploadProfileImage
-PATCH {{host}}/users/profile-picture
+PATCH {{host}}/users/profile/picture
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW

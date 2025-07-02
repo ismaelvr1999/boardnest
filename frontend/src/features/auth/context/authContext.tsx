@@ -1,43 +1,48 @@
-import { createContext, useState, useContext,useEffect} from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import axios from "../../../lib/axios";
-import type { AuthContexType, AuthProviderType,User} from "../auth.types";
+import type { AuthContexType, AuthProviderType, User } from "../auth.types";
 import { useNavigate } from "react-router-dom";
-import { logoutUser} from "../auth.api";
-
+import { logoutUser } from "../auth.api";
+import buildURL from "../../../utils/buildURL";
 const AuthContext = createContext<AuthContexType>(null);
 
 export const UseAuth = () => {
     const context = useContext(AuthContext);
     if (!context) throw new Error("useAuth must be used within a AuthProvider");
     return context;
-  };
+};
 
 
-export const AuthProvider:AuthProviderType = ({children})=> {
-    const [user,setUser] = useState<User>(null);
+export const AuthProvider: AuthProviderType = ({ children }) => {
+    const [user, setUser] = useState<User>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [loading,setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const nav = useNavigate();
-    const logout =  async () => {
+    const logout = async () => {
         await logoutUser();
         setUser(null);
         setIsAuthenticated(false);
         nav("/login");
-      };
-      
-      useEffect(()=>{
-        const verify = async ()=>{
+    };
+
+    useEffect(() => {
+        const verify = async () => {
             const result = await axios.get("users/verify");
-            setUser(result.data.profile);
+            setUser({
+                ...result.data.profile,
+                picture: result.data.profile.picture ?
+                    buildURL(result.data.profile.picture) :
+                    buildURL("profile-pictures/default.png")
+            });
             setIsAuthenticated(true);
             setLoading(false);
         }
-        verify().catch((error)=>{
+        verify().catch((error) => {
             setLoading(false);
             setIsAuthenticated(false);
             console.log(error.message);
         })
-      },[]);
+    }, []);
 
     return (
         <AuthContext.Provider value={{

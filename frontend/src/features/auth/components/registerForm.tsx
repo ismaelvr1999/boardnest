@@ -12,7 +12,7 @@ function LoginForm() {
               <input {...register("email",{required:true})} type="email" className="block border border-white w-[100%] text-sm text-[#B5B5B5] p-4 rounded-lg my-5" placeholder="Enter your email"/>
               <input {...register("password",{required:true})} type="password" className="block border border-white w-[100%] text-sm text-[#B5B5B5] p-4 rounded-lg my-5" placeholder="Enter your password"/>
               <div className="flex justify-center mb-10 mt-10">
-                  <button className="p-2 bg-green-700 text-lg font-light text-center w-2/3 rounded-lg cursor-pointer ">Sign Up</button>
+                  <button className="p-2 bg-green-700 text-lg font-light text-center w-2/3 rounded-lg cursor-pointer hover:bg-green-600 hover:scale-105 transform transition-transform duration-200 ease-in-out">Sign Up</button>
               </div>
               <Toast/>
           </form>

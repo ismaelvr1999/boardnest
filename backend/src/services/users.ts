@@ -64,7 +64,8 @@ export default class usersService {
   }
 
   async addProfilePicture (pictureName:string,id:string){
-    await User.update({picture:pictureName},{
+    const picturePath = `profile-pictures/${pictureName}`;
+    await User.update({picture:picturePath},{
       where:{
         id
       }

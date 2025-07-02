@@ -11,9 +11,9 @@ const storage = multer.diskStorage({
         cb(null,"uploads/profile-pictures/")
     },
     filename(req, file, cb) {
-        const {id} = (req as AuthRequest).user;
+        const {username} = (req as AuthRequest).user;
         const ext = path.extname(file.originalname);
-        cb(null,id+Date.now()+ext);
+        cb(null,username+Date.now()+ext);
     },
 });
 
@@ -45,7 +45,7 @@ router.get("/users/logout",
     controller.logout.bind(controller)
 )
 
-router.patch(`/users/profile-picture`,
+router.patch(`/users/profile/picture`,
     auth,
     upload.single("profile-picture"),
     controller.addProfilePicture.bind(controller)

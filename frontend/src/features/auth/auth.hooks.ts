@@ -5,7 +5,7 @@ import type { FormLoginValues,FormRegisterValues } from "./auth.types";
 import { UseAuth } from "./context/authContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import buildURL from "../../utils/buildURL";
 export const  useLogin = ()=> {
     const {setIsAuthenticated,setUser,isAuthenticated} = UseAuth();
     const { register, handleSubmit } = useForm<FormLoginValues>();
@@ -15,7 +15,12 @@ export const  useLogin = ()=> {
         const resp = await signIn(d);
         toast.success(`Login successfully`);
         setIsAuthenticated(true);
-        setUser(resp.data.profile);
+        setUser({
+                ...resp.data.profile,
+                picture: resp.data.profile.picture ?
+                    buildURL(resp.data.profile.picture) :
+                    buildURL("profile-pictures/default.png")
+            });
         
       } catch (error) {
         if(error instanceof Error){

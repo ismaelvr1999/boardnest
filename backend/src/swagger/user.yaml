@@ -142,7 +142,7 @@
       500:
         $ref: "#/components/responses/InternalServerError"
 
-/api/users/profile-picture:
+/api/users/profile/picture:
   patch:
     summary: Upload or update profile image
     tags:

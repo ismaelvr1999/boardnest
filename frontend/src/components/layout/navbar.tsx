@@ -22,8 +22,8 @@ function Navbar() {
           </div>
         </>
       ) : (
-        <>
-          <div className="h-2/3 w-14 rounded-full border border-white mr-4 bg-[url(/user.jpg)] bg-cover bg-center"></div>
+        <>      
+          {user && <img src={user.picture} alt="" className="h-2/3 w-14 rounded-full border-2 cursor-pointer border-white mr-4"/>}
           <p className=" text-xl mr-4">{user ? user.username : ""}</p>
           <button
             onClick={logout}

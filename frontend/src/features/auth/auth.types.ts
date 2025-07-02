@@ -26,6 +26,7 @@ export type User = {
     firstName: string;
     lastName:string;
     email:string;
+    picture:string | undefined;
 } | null;
 
 export type AuthProviderType = ({children}:{children:ReactNode}) => JSX.Element;
