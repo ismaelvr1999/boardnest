@@ -45,9 +45,14 @@ router.get("/users/logout",
     controller.logout.bind(controller)
 )
 
+router.get(`/users/profile`,
+    auth,
+    controller.getProfileUser.bind(controller)
+)
+
 router.patch(`/users/profile/picture`,
     auth,
-    upload.single("profile-picture"),
+    upload.single("profile_picture"),
     controller.addProfilePicture.bind(controller)
 )
 export default router;

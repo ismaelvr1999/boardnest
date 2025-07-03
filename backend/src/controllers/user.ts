@@ -54,10 +54,15 @@ export default class usersController {
   async addProfilePicture(req:Request,res:Response){
     const {id} = (req as AuthRequest).user;
     if(!req.file) {
-      res.status(400).send("No file uploaded");
+      res.status(400).send({ok:false,message:"No file uploaded"});
       return;
     }
     await this.service.addProfilePicture(req.file.filename,id);
     res.status(200).send({ok:true});
+  }
+  async getProfileUser(req:Request, res:Response){
+    const {id} =(req as AuthRequest).user;
+    const profile = await this.service.getProfileUser(id);
+    res.status(200).json({ok:true,profile});
   }
 }

@@ -154,9 +154,6 @@
           schema:
             type: object
             properties:
-              text:
-                type: string
-                description: Title or description
               profile-picture:
                 type: string
                 format: binary

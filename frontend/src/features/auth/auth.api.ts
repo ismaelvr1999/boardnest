@@ -11,3 +11,11 @@ export const signIn = async (data:FormLoginValues)=>{
 export const logoutUser = async ()=>{
   axios.get("users/logout");
 }
+
+export const uploadProfileImage = async (data:FormData)=>{
+    return axios.patch("users/profile/picture",data,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    });
+}

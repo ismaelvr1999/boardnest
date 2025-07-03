@@ -1,8 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { UseAuth } from "../../features/auth/context/authContext";
+import useModal from "../../hooks/modal.hook";
+import Modal from "../modal";
+import ProfileModal from "./profileModal";
 
 function Navbar() {
   const { isAuthenticated, user, logout } = UseAuth();
+  const { isHidden, handleClose, handleOpen } = useModal();
   return (
     <nav className=" flex items-center">
       {!isAuthenticated ? (
@@ -22,8 +26,8 @@ function Navbar() {
           </div>
         </>
       ) : (
-        <>      
-          {user && <img src={user.picture} alt="" className="h-2/3 w-14 rounded-full border-2 cursor-pointer border-white mr-4"/>}
+        <>
+          {user && <img src={user.picture} alt="profile-picture" onClick={handleOpen} className="h-2/3 w-14 rounded-full border-2 cursor-pointer border-white mr-4" />}
           <p className=" text-xl mr-4">{user ? user.username : ""}</p>
           <button
             onClick={logout}
@@ -34,13 +38,16 @@ function Navbar() {
 
           <NavLink
             to="/boards"
-            className = 'ml-auto h-full flex items-center hover:border-b-2' 
+            className='ml-auto h-full flex items-center hover:border-b-2'
           >
             <p className="text-xl">My boards</p>
           </NavLink>
-
+          <Modal isHidden={isHidden} handleClose={handleClose}>
+            <ProfileModal user={user}></ProfileModal>
+          </Modal>
         </>
       )}
+
     </nav>
   );
 }

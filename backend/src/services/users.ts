@@ -70,6 +70,11 @@ export default class usersService {
         id
       }
     });
+  }
 
+  async getProfileUser (id:string){
+    return User.findByPk(id,{
+      attributes:["username","firstName","lastName","email","picture"]
+    })
   }
 }
