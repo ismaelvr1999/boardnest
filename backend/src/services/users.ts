@@ -1,11 +1,12 @@
 import { CreateUser } from "../dto/users.dto";
 import User from "../models/user";
+import { JwtAuthPayload } from "../types/authenticate.types";
 import HttpError from "../utils/httpError";
 import bcrypt from "bcrypt-ts";
 import jwt from "jsonwebtoken";
 
 export default class usersService {
-  constructor(private jwtSecret: string) {}
+  constructor(private jwtSecret: string) { }
 
   async signUp(user: CreateUser) {
     user.password = await bcrypt.hash(user.password, 10);
@@ -34,47 +35,69 @@ export default class usersService {
     }
     const profile = {
       username: user.username,
-      email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      email: user.email,
       picture: user.picture
     }
     const payload = {
       id: user.id,
       ...profile
-    };
+    }
+    const token =  this.createToken(payload);
 
-    const token = jwt.sign(
-      payload,
-      this.jwtSecret,
-      {
-        expiresIn:"7d"
-      }
-    );
-
-    return {token,profile};
+    return { token, profile };
   }
 
-  async getUser(id: string)  {
+  async getUser(id: string) {
     const user = await User.findByPk(id);
-    if(!(user instanceof User)) {
-      throw new HttpError(404,"User not found");
+    if (!(user instanceof User)) {
+      throw new HttpError(404, "User not found");
     }
     return user;
   }
 
-  async addProfilePicture (pictureName:string,id:string){
+  async addProfilePicture(pictureName: string, id: string) {
     const picturePath = `profile-pictures/${pictureName}`;
-    await User.update({picture:picturePath},{
-      where:{
+    await User.update({ picture: picturePath }, {
+      where: {
         id
       }
     });
+    const profile = await this.getProfileUser(id);
+    const payload = {
+      id: id,
+      ...profile
+    }
+    const token =  this.createToken(payload);
+    return {profile,token};
   }
 
-  async getProfileUser (id:string){
-    return User.findByPk(id,{
-      attributes:["username","firstName","lastName","email","picture"]
-    })
+  async getProfileUser(id: string) {
+    const user = await User.findByPk(id, {
+      attributes: ["username", "firstName", "lastName", "email", "picture"]
+    });
+    if (!(user instanceof User)) {
+      throw new HttpError(404, "User not found");
+    }
+    const profile = {
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      picture: user.picture
+    }
+    return profile;
+  }
+
+  createToken(payload: JwtAuthPayload) {
+    const token = jwt.sign(
+      payload,
+      this.jwtSecret,
+      {
+        expiresIn: "7d"
+      }
+    );
+    return token;
   }
 }

@@ -30,14 +30,8 @@ export default class usersController {
   }
 
   async verifyToken(req:Request, res:Response){
-    const {username,firstName,lastName,email,picture} =(req as AuthRequest).user;
-    const profile = {
-      username,
-      firstName,
-      lastName,
-      email,
-      picture
-    }
+    const {id} =(req as AuthRequest).user;
+    const profile = await this.service.getProfileUser(id);
     res.status(200).json({ok:true,profile})
   }
 
@@ -57,8 +51,14 @@ export default class usersController {
       res.status(400).send({ok:false,message:"No file uploaded"});
       return;
     }
-    await this.service.addProfilePicture(req.file.filename,id);
-    res.status(200).send({ok:true});
+    const {profile,token} = await this.service.addProfilePicture(req.file.filename,id);
+    res.cookie("auth",token,{
+      httpOnly:true,
+      secure: false,
+      sameSite:"lax",
+      path:"/"
+    });
+    res.status(200).send({ok:true, profile});
   }
   async getProfileUser(req:Request, res:Response){
     const {id} =(req as AuthRequest).user;

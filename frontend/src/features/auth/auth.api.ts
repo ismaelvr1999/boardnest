@@ -19,3 +19,7 @@ export const uploadProfileImage = async (data:FormData)=>{
       }
     });
 }
+
+export const getUserProfile = async ()=>{
+    return axios.get("users/profile");
+}

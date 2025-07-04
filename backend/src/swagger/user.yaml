@@ -172,3 +172,38 @@
         $ref: "#/components/responses/BadRequest"
       500:
         $ref: "#/components/responses/InternalServerError"
+/users/profile:
+  get:
+    summary: Get logged-in user's profile
+    tags:
+      - User
+    responses:
+      200:
+        description: Successfully retrieved profile
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                profile:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+                    picture:
+                      type: string
+      400:
+        $ref: "#/components/responses/BadRequest"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      500:
+        $ref: "#/components/responses/InternalServerError"
