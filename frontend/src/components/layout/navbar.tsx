@@ -13,7 +13,7 @@ function Navbar() {
         <>
           <h1 className="text-3xl font-bold">BoardNest</h1>
           <div className="ml-auto">
-            <Link to="login">
+            <Link to="/">
               <button className="py-2 px-5 rounded-lg bg-white text-black cursor-pointer hover:shadow-white hover:shadow-xl/10 hover:scale-105 transform transition-transform duration-200 ease-in-out">
                 Sign In
               </button>

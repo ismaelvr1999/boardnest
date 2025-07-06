@@ -22,7 +22,7 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
         await logoutUser();
         setUser(null);
         setIsAuthenticated(false);
-        nav("/login");
+        nav("/");
     };
 
     useEffect(() => {
@@ -37,10 +37,9 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
             setIsAuthenticated(true);
             setLoading(false);
         }
-        verify().catch((error) => {
+        verify().catch((_) => {
             setLoading(false);
             setIsAuthenticated(false);
-            console.log(error.message);
         })
     }, []);
 

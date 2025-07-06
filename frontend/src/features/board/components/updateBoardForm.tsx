@@ -19,7 +19,7 @@ const UpdateBoardForm = () => {
         className="block border border-white w-full text-sm text-[#B5B5B5] p-4 rounded-lg my-2"
         placeholder="Enter board description"
       />
-      <button className="p-2 bg-green-500  text-lg my-2 text-center rounded-lg cursor-pointer ">
+      <button className="p-2 bg-green-700 hover:bg-green-600  text-lg my-2 text-center rounded-lg cursor-pointer ">
         Update
       </button>
     </form>

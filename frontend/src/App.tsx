@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route element={<Layout/>}>
            {/* Auth routers */}
-          <Route path='login' element={<Login/>}/>
+          <Route path='/' element={<Login/>}/>
           <Route path='register'  element={<Register/>}/>
           {/* ProtectedRouters */}
           <Route element={<ProtectedRouters/>}>

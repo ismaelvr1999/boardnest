@@ -6,7 +6,7 @@ const ProtectedRouters = () => {
     if(loading){
       return <Spinner/>
     }
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace/>;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/" replace/>;
   };
   
 export default ProtectedRouters;
