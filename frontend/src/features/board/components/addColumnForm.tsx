@@ -13,7 +13,7 @@ const AddColumnForm = () => {
       />
 
       <input {...register("BoardId")} type="hidden" />
-      <button className="p-2 bg-green-500  text-lg my-2 text-center rounded-lg cursor-pointer ">
+      <button className="p-2 bg-green-700  hover:bg-green-600  text-lg my-2 text-center rounded-lg cursor-pointer ">
         Add
       </button>
     </form>

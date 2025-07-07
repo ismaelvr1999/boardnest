@@ -13,6 +13,18 @@ Kanban-style task management web app that enables users to organize workflows, v
 - **JSX**
 - **Sequelize**
 
+# Screenshots
+## Sign In
+![Sign In](./screenshots/sign-in.png)
+## User Boards
+![User Boards](./screenshots/user-boards.png)
+## Board
+![Board](./screenshots/board.png)
+## Reorder columns
+![Reorder columns](./screenshots/reorder-columns.gif)
+## Reorder tasks
+![Reorder tasks](./screenshots/reorder-task.gif)
+
 # Installation
 
 ## Backend
