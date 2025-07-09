@@ -1,0 +1,31 @@
+name: boardnest
+services: 
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "4000:3000"
+    depends_on:
+      - database
+    networks:
+      - network
+  frontend:
+    build: ./frontend
+    ports:
+      - "5000:5173"
+    networks:
+      - network
+  database:
+    image: bitnami/mariadb
+    environment:
+      MARIADB_DATABASE: boardnest
+      MARIADB_ROOT_PASSWORD: mypassword
+    networks:
+      - network
+    volumes:
+      - db_data:/var/lib/mysql
+networks:
+  network:
+    driver: bridge
+volumes:
+  db_data:
