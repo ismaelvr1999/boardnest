@@ -1,7 +1,8 @@
 FROM bitnami/node
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml entrypoint.sh wait-for-it.sh ./ 
+RUN chmod +x ./entrypoint.sh ./wait-for-it.sh
 RUN pnpm install 
 COPY . ./
 EXPOSE 3000
-CMD [ "pnpm","run","dev"]
+ENTRYPOINT ["./entrypoint.sh"]

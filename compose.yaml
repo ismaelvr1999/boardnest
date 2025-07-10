@@ -2,9 +2,9 @@ name: boardnest
 services: 
   backend:
     build: ./backend
-    restart: always
+    restart: on-failure
     ports:
-      - "4000:3000"
+      - "3000:3000"
     depends_on:
       - database
     networks:
@@ -12,14 +12,14 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5000:5173"
+      - "5173:5173"
     networks:
       - network
   database:
     image: bitnami/mariadb
     environment:
       MARIADB_DATABASE: boardnest
-      MARIADB_ROOT_PASSWORD: mypassword
+      MARIADB_ROOT_PASSWORD: # set password
     networks:
       - network
     volumes:

@@ -79,6 +79,34 @@ Create a .env file add the following variables:
     pnpm run dev
     ```
 
+# Running the Boardnest App with Docker
+
+## 1. Set up backend environment variables
+
+Create a `.env` file inside the `backend` folder and add the following variables:
+
+```env
+DB_HOST=database
+DB_USER=root
+DB_PASSWORD=your_password_here   # Use the same password as in your docker-compose file
+DB_NAME=boardnest
+FRONTEND_URL=http://localhost:5000  # Use the frontend's exposed port
+PORT=3000
+JWT_SECRET=your_jwt_secret_here
+```
+## 2. Set up frontend environment variables
+Create a .env file inside the frontend folder and add the following variable:
+```env
+VITE_API_URL=http://localhost:4000/   # Use the backend's exposed port
+```
+## 3. Configure MariaDB root password in compose.yml
+Make sure the MARIADB_ROOT_PASSWORD in your docker-compose.yml matches the DB_PASSWORD used in the backend .env file.
+## 4. Run Docker Compose
+From the root directory (e.g., boardnest), run:
+```bash
+docker compose up
+```
+
 # Api Documentation
 
 The documentation is available at the following URL:

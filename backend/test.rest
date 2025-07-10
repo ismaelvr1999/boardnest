@@ -1,5 +1,5 @@
 
-@host=http://localhost:3000/api
+@host=http://localhost:4000/api
 
 # @name signup
 POST  {{host}}/users/register
